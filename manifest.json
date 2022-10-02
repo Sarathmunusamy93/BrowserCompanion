@@ -1,0 +1,29 @@
+{
+  "name": "Track me",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "tabs",
+    "history",
+    "alarms",
+    "notifications",
+    "storage"
+  ],
+  "action": {},
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "./jquery.min.js",
+        "./utils.js"
+      ]
+    }
+  ]
+}

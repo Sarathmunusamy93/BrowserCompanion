@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>TrackME</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+    <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+    <script src="./background.js"></script>
+    <!-- <script src=" https://unpkg.com/idb/build/iife/index-min.js"></script> -->
+
+    <div class="ui container" id="RemaindMePageContainer">
+
+        <div style="margin-top: 10px" class="ui container">
+            <button class="ui icon button addRemainderbtn" id="addRemainder">Add New Remainder
+                <i class="huge bell icon addRemainder"></i>
+            </button>
+
+            <div class="addNewRemainder">
+                <input type="date" id="dateValue" /> <input type="time" id="timeValue" />
+                <textarea id="message" placeholder="Enter Message">
+
+                </textarea>
+                <input type="checkbox" id="launchURL"> show any URL to Lanch ?
+                <input type="url" id="targetURL">
+
+            </div>
+
+        </div>
+
+        <div class="ui sidebar  
+                    vertical menu visible">
+            <h2 class="SideBarTitle">Track Me</h2>
+
+            <i id="toogleSideBar" class="chevron right icon"></i>
+
+            <a class="item" href="./MainPage.html">
+                Dashboard
+            </a>
+            <a class="item" href="./ControlMe.html">
+                Control Me
+            </a>
+            <a class="item">
+                Remaind Me
+            </a>
+        </div>
+
+        <table class="ui celled table" id="remaindMeDetails">
+            <thead>
+                <tr>
+                    <th>Date and Time</th>
+                    <th>Message</th>
+                    <th>URL</th>
+                </tr>
+            </thead>
+            <tbody id="RemainderTableBody">
+
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+    </div>
+
+    <script src="./indexDBModel.js"></script>
+    <script src="./utils.js"></script>
+    <script src="./jquery.min.js"></script>
+    <script src="./chartjs.js"></script>
+    <script src="./StartPage.html"></script>
+    <script src="./moment.min.js"></script>
+    <!--  <script src="./bootstrap-datetimepicker.min.js"></script>
+    <script src="./bootstrap.min.js"></script> -->
+
+</body>
+
+</html>

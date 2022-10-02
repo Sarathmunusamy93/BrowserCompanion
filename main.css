@@ -1,0 +1,69 @@
+#startPageContainer {
+  margin: 20% 30%;
+}
+
+.item {
+  height: 25%;
+  font-size: larger;
+  align-items: center;
+  align-content: center;
+}
+
+.SideBarTitle {
+  bottom: 50px;
+}
+
+.dashboardContainer {
+  margin: 20px 60px;
+  display: flex;
+  gap: 15px;
+}
+
+.chartArea {
+  display: block;
+  /* width: 600px;
+    height: 500px; */
+  margin: 40px 200px;
+}
+
+#histroyDetails {
+  margin: 5px 200px !important;
+}
+
+#siteHistroyDetails {
+  margin: 5px 200px !important;
+}
+
+.addRemainder {
+  color: darkseagreen;
+}
+
+.addRemainderbtn {
+  margin: 0px 40% !important;
+}
+
+.addNewRemainder {
+  margin: 10px 20%;
+  width: 100%;
+}
+
+#controlMePageContainer {
+  margin-left: 20% !important;
+}
+
+.input {
+  display: flex;
+  gap: 20px;
+}
+
+#controlsDetails {
+  margin-top: 5%;
+}
+
+#remaindMeDetails {
+  margin-left: 50px;
+}
+
+#resetChart {
+  color: black !important;
+}

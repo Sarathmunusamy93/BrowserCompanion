@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>TrackME</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+    <link rel="stylesheet" href="./main.css">
+    <link rel="stylesheet" href="./dropdown.min.css">
+
+</head>
+
+<body>
+
+    <!-- Write your html code here -->
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script> -->
+    <script src="./background.js"></script>
+    <!-- <script src=" https://unpkg.com/idb/build/iife/index-min.js"></script> -->
+
+    <div class="ui container" id="controlMePageContainer">
+
+        <div style="margin-top: 100px" class="ui container">
+
+            <div class="ui input">
+                <input type="text" id="controlSiteURL" placeholder="Enter Site URL">
+                <div class="ui selection dropdown">
+                    <input type="hidden" name="gender">
+                    <i class="dropdown icon"></i>
+                    <div class="default text"> </div>
+                    <div class="menu">
+                        <div class="item" data-value="0" selected>Hourly</div>
+                        <div class="item" data-value="1">Weekly</div>
+                        <div class="item" data-value="2">Monthly</div>
+                    </div>
+                </div>
+                <input id="controlHours" type="number" placeholder="Restricted hour">
+                <button class="ui button" id="addSiteControl"> Add Control </button>
+            </div>
+
+
+            <div class="ui sidebar  
+                    vertical menu visible">
+                <h2 class="SideBarTitle">Track Me</h2>
+
+                <i id="toogleSideBar" class="chevron right icon"></i>
+
+                <a class="item" href="./MainPage.html">
+                    Dashboard
+                </a>
+                <a class="item">
+                    Control Me
+                </a>
+                <a class="item" href="./RemaindMe.html">
+                    Remaind Me
+                </a>
+            </div>
+
+            <table class="ui celled table" id="controlsDetails">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>URL/ Domain</th>
+                        <th>constrain</th>
+                        <th>Hours</th>
+                    </tr>
+                </thead>
+                <tbody id="controlsDetailsTableBody">
+
+                </tbody>
+            </table>
+
+
+        </div>
+
+    </div>
+    <script src="./jquery.min.js"></script>
+    <script src="./indexDBModel.js"></script>
+    <script src="./ControlMeUtils.js"></script>
+    <script src="./chartjs.js"></script>
+    <script src="./StartPage.html"></script>
+    <script src="./semanticUI.min.js"></script>
+    <script src="./dropdown.min.js"></script>
+
+</body>
+
+</html>
