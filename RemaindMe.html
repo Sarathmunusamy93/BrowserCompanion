@@ -5,10 +5,11 @@
     <title>TrackME</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
     <link rel="stylesheet" href="./main.css">
+    <link rel="stylesheet" href="./dropdown.min.css">
 </head>
 
 <body>
-    <script src="./background.js"></script>
+    <!-- <script src="./background.js"></script> -->
     <!-- <script src=" https://unpkg.com/idb/build/iife/index-min.js"></script> -->
 
     <div class="ui container" id="RemaindMePageContainer">
@@ -18,7 +19,12 @@
                 <i class="huge bell icon addRemainder"></i>
             </button>
 
-            <div class="addNewRemainder">
+            <div class="remainderCategory">
+            <input type="radio" id="oneTimeReminder" checked>One Time 
+            <input type="radio" id="recurringReminder">Recurring
+        </div>
+            <div class="addNewRemainderForOneTime">
+               
                 <input type="date" id="dateValue" /> <input type="time" id="timeValue" />
                 <textarea id="message" placeholder="Enter Message">
 
@@ -26,6 +32,43 @@
                 <input type="checkbox" id="launchURL"> show any URL to Lanch ?
                 <input type="url" id="targetURL">
 
+            </div>
+
+            <div class="addNewRecurringRemainder">
+              
+                <select class="ui dropdown recurringDurationOption" id="recurringDaysOptionsValue">
+                    <option class="recurringDaysOptionsValues" value="0" selected>Weekly</option>
+                    <option class="recurringDaysOptionsValues" value="1">Monthly</option>
+                  </select>
+
+                <!-- <div class="ui selection dropdown recurringDurationOption">
+                   
+                    <i class="dropdown icon"></i>
+                    <div class="default text"  id="recurringDaysOptionsValue"> </div>
+                    <div class="menu">
+                        <div class="item active" data-value="0">Weekly</div>
+                        <div class="item" data-value="0">Monthly</div>
+                    </div>                                  
+                </div> -->
+
+                <input type="date" id="recurringDateValue" />
+
+                <select class="ui dropdown recurringDurationOptionDays" id="recurringDaysOptions">
+                    <option value="0" selected>All Days</option>
+                  </select>
+
+                <!-- <div class="ui selection dropdown" id="recurringDaysOptions">
+                   
+                    <i class="dropdown icon"></i>
+                    <div class="default text"> </div>
+                    <div class="menu" id="daysOptions">
+                        <div class="item" data-value="0" selected>All Days</div>
+                       
+                    </div>
+                </div> -->
+
+
+                <input type="time" id="recurringTimeValue" />
             </div>
 
         </div>
@@ -53,6 +96,7 @@
                     <th>Date and Time</th>
                     <th>Message</th>
                     <th>URL</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody id="RemainderTableBody">
@@ -66,12 +110,15 @@
 
     </div>
 
+    <script src="./jquery.min.js"></script>
     <script src="./indexDBModel.js"></script>
     <script src="./utils.js"></script>
     <script src="./jquery.min.js"></script>
     <script src="./chartjs.js"></script>
     <script src="./StartPage.html"></script>
+    <script src="./semanticUI.min.js"></script>
     <script src="./moment.min.js"></script>
+    <script src="./dropdown.min.js"></script>
     <!--  <script src="./bootstrap-datetimepicker.min.js"></script>
     <script src="./bootstrap.min.js"></script> -->
 

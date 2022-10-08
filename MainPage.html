@@ -1,76 +1,65 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>TrackME</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
-    <link rel="stylesheet" href="./main.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"
+    />
+    <link rel="stylesheet" href="./main.css" />
+  </head>
 
-</head>
-
-<body>
-
-    <!-- Write your html code here -->
-
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.js"></script> -->
- 
-    <!-- <script src=" https://unpkg.com/idb/build/iife/index-min.js"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script> -->
-
+  <body>
     <div class="ui container">
+      <div class="dashboardContainer">
+        <button class="ui pink basic button chartFilterBtn" id="todayFilter">
+          Today
+        </button>
+        <button class="ui pink basic button chartFilterBtn" id="weekFilter">
+          Last Week
+        </button>
+        <button class="ui pink basic button chartFilterBtn" id="monthFilter">
+          Last Month
+        </button>
+        <button class="ui pink basic button chartFilterBtn" id="yearFilter">
+          Last Year
+        </button>
+        From <input type="date" id="filterStartDate" /> to
+        <input type="date" id="filterEndDate" disabled />
+        <button class="ui gray basic button" id="resetChart">Reset</button>
+        <button class="negative ui button" id="clearAllHistoryItems">
+          Clear all Data
+        </button>
+      </div>
+      <div class="operationInfo" id="operationInformation">
+        This is Information
+      </div>
+      <div class="ui sidebar vertical menu visible">
+        <h2 class="SideBarTitle">Track Me</h2>
 
-        <div class="dashboardContainer">
-            <button class="ui pink basic button chartFilterBtn" id="todayFilter">Today</button>
-            <button class="ui pink basic button chartFilterBtn" id="weekFilter">Last Week</button>
-            <button class="ui pink basic button chartFilterBtn" id="monthFilter">Last Month</button>
-            <button class="ui pink basic button chartFilterBtn" id="yearFilter">Last Year</button>
-            From <input type="date" id="filterStartDate"> to <input type="date" id="filterEndDate" disabled>
-            <button class="ui gray basic button" id="resetChart"> Reset </button>
-        </div>
+        <i id="toogleSideBar" class="chevron right icon"></i>
 
-        <div class="ui sidebar  
-                    vertical menu visible">
-            <h2 class="SideBarTitle">Track Me</h2>
+        <a class="item"> Dashboard </a>
+        <a class="item" href="./ControlMe.html"> Control Me </a>
+        <a class="item" href="./RemaindMe.html"> Remaind Me </a>
+      </div>
+      <div class="pusher"></div>
 
-            <i id="toogleSideBar" class="chevron right icon"></i>
+      <div class="chartArea">
+        <canvas id="siteHisoryChart" width="300" height="200"></canvas>
+      </div>
+      <div id="chartInfo">
 
-            <a class="item">
-                Dashboard
-            </a>
-            <a class="item" href="./ControlMe.html">
-                Control Me
-            </a>
-            <a class="item" href="./RemaindMe.html">
-                Remaind Me
-            </a>
-        </div>
-        <div class="pusher">
-        </div>
+      </div>
+      <table class="ui celled sortable table" id="histroyDetails">
+        <thead id="historyTableHeaders"></thead>
+        <tbody id="historyTableBody"></tbody>
+      </table>
 
-        <div class="chartArea">
-            <canvas id="siteHisoryChart" width="300" height="200"></canvas>
-        </div>
-        <table class="ui celled sortable table" id="histroyDetails">
-            <thead id="historyTableHeaders">
-
-            </thead>
-            <tbody id="historyTableBody">
-
-            </tbody>
-        </table>
-
-        <table class="ui celled sortable table" id="siteHistroyDetails">
-            <thead id="historyDateTable">
-
-            </thead>
-            <tbody id="activesTableBody">
-
-            </tbody>
-        </table>
-
-    </div>
-
+      <table class="ui celled sortable table" id="siteHistroyDetails">
+        <thead id="historyDateTable"></thead>
+        <tbody id="activesTableBody"></tbody>
+      </table>
     </div>
     <script src="./jquery.min.js"></script>
     <script src="./moment.min.js"></script>
@@ -80,8 +69,5 @@
     <script src="./tablesort.js"></script>
     <script src="./utils.js"></script>
     <!-- <script src="./background.js"></script> -->
-
-
-</body>
-
+  </body>
 </html>

@@ -95,18 +95,6 @@ function redirectToDashboardPage() {
   chrome.tabs.update(undefined, { url: url });
 }
 
-function saveTabInfo(tabInfo) {
-  add(
-    "TrackMeHistoryList",
-    "TrackMeHistoryListDB",
-    tabInfo,
-    false,
-    function (result) {
-      console.log(result);
-    }
-  );
-}
-
 window.onload = function loadChartItems() {
   if (window.location.pathname.indexOf("/MainPage.html") > -1) {
     showBrowserHistroyData();
@@ -215,18 +203,24 @@ function renderChartOnConstrains(domainDetails, itemColor) {
   renderChartItems(urlDomain, visitedCount, itemColor);
 }
 
-function renderSiteHistroyOnTable(vistedData) {
+function renderSiteHistroyOnTable(vistedData, label) {
   $("#histroyDetails").hide();
   $("#siteHistroyDetails").show();
 
   $("#tblheaderRow").html("");
   $("#activesTableBody").html("");
 
+  $("#chartInfo").html(label);
+
   var tblheaderRow =
-    '<tr id="row">  <th> Date  </th>  <th> Hours Spend </th> </tr>';
+    '<tr id="row">  <th> Date  </th>  <th> Mins Spend </th> </tr>';
   $("#siteHistroyDetails").append(tblheaderRow);
 
+  let totalVisitedHours = 0;
+
   vistedData.forEach(function (data, index) {
+    totalVisitedHours += data.totalActiveHours;
+
     var tbleBodyRow =
       '<tr id="row' +
       index +
@@ -235,7 +229,17 @@ function renderSiteHistroyOnTable(vistedData) {
       '  </td>  <td data-label="count"> ' +
       data.totalActiveHours +
       " </td> ";
+
     $(" #activesTableBody").append(tbleBodyRow);
+    if (vistedData.length - 1 == index) {
+      var tbleBodyLastRow =
+        '<tr id="row' +
+        index +
+        '">  <td data-label="domain"> <b> Total  </b>  </td>  <td data-label="count"> <b>' +
+        totalVisitedHours +
+        "</b> </td> ";
+      $(" #activesTableBody").append(tbleBodyLastRow);
+    }
   });
 }
 
@@ -290,6 +294,9 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
       legend: {
         display: false,
       },
+      tooltips: {
+        mode: "index",
+      },
     },
   });
 
@@ -303,7 +310,7 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
       var value = chartData.datasets[0].data[idx];
 
       if (domainDetails[label] && domainDetails[label].visitedDetails)
-        renderSiteHistroyOnTable(domainDetails[label].visitedDetails);
+        renderSiteHistroyOnTable(domainDetails[label].visitedDetails, label);
     } else {
       $("#siteHistroyDetails").hide();
       $("#histroyDetails").show();
@@ -339,6 +346,68 @@ function advancedFiltering() {
 }
 
 // ------------------- remainer Logics --------------------------
+$(document).ready(function () {
+  $(".ui.dropdown").dropdown({
+    onchange: function (val) {
+      console.log(val);
+    },
+  });
+
+  moment.weekdays().forEach(function (day, index) {
+    var optionDom = '<option value="' + (index + 1) + '">' + day + "</div>";
+    $("#recurringDaysOptions").append(optionDom);
+  });
+
+  $("#recurringDateValue").hide();
+
+  $(".addNewRecurringRemainder").hide();
+  $("#recurringReminder").click(function () {
+    $(".addNewRecurringRemainder").show();
+    $(".addNewRemainderForOneTime").hide();
+    $("#oneTimeReminder").prop("checked", false);
+  });
+
+  $("#recurringDaysOptionsValue").change(function (event) {
+    var selectedText = $(".recurringDaysOptionsValues:selected").text();
+    if (selectedText == "Monthly") {
+      $("#recurringDateValue").show();
+      $(".recurringDurationOptionDays").hide();
+    } else if (selectedText == "Weekly") {
+      $("#recurringDateValue").hide();
+      $(".recurringDurationOptionDays").show();
+    }
+  });
+
+  $("#oneTimeReminder").click(function () {
+    $(".addNewRecurringRemainder").hide();
+    $(".addNewRemainderForOneTime").show();
+    $("#recurringReminder").prop("checked", false);
+  });
+
+  $("#clearAllHistoryItems").click(function (event) {
+    clearAllHistory();
+  });
+});
+
+function triggerPopup(helperText) {
+  $("#operationInformation").show();
+  $("#operationInformation").html(helperText);
+  setTimeout(function () {
+    $("#operationInformation").hide();
+    $("#operationInformation").html("");
+  }, 1500);
+}
+
+function clearAllHistory() {
+  func = function () {
+    triggerPopup("Items Deleted.....");
+  };
+  deleteAll("TrackMeHistoryList", "TrackMeHistoryListDB", func);
+}
+
+function handleRecurreringDurationChange(val) {
+  console.log(val);
+}
 
 function fetchRemainder() {
   renderRemainder = function (results) {
@@ -353,7 +422,12 @@ function fetchRemainder() {
         " </td> " +
         '<td data-label="TargetURL"> ' +
         remainder.targetURL +
-        " </td></tr>";
+        " </td>" +
+        "</td> " +
+        '<td data-label="TargetURL"> <i class="large delete outline icon" id=' +
+        remainder.id +
+        '></i> <i class="large edit outline icon"></i></td>' +
+        "<tr>";
 
       $(" #RemainderTableBody ").append(tblRow);
     });
@@ -373,12 +447,29 @@ function saveRemaindar() {
   };
 
   setAlarmForReminder = function (result) {
-    createAlarmForRemainder(remainder, result);
+    $("#RemainderTableBody").html("");
+    fetchRemainder();
+
+    //createAlarmForRemainder(remainder, result);
+    //code to send message to open notification. This will eventually move into my extension logic
+    chrome.runtime.sendMessage({
+      type: "createAlarmForReminder",
+      options: {
+        id: result,
+        remainder,
+      },
+    });
   };
 
   add("RemaindME", "RemaindMEDB", remainder, false, setAlarmForReminder);
 }
 
+$(document.body).on("click", ".delete", function (event) {
+  deleteRemainder(parseInt(event.target.id));
+  $("#RemainderTableBody").html("");
+  fetchRemainder();
+});
+
 function deleteRemainder(id) {
-  del("RemaindME", "RemaindMEDB", id);
+  del("RemaindME", "RemaindMEDB", id, true);
 }

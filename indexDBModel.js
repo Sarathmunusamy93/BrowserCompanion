@@ -1,105 +1,129 @@
 var window = window ?? self;
 
-// This works on all devices/browsers, and uses IndexedDBShim as a final fallback 
-var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB,
-    IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
+// This works on all devices/browsers, and uses IndexedDBShim as a final fallback
+var indexedDB =
+    window.indexedDB ||
+    window.mozIndexedDB ||
+    window.webkitIndexedDB ||
+    window.msIndexedDB ||
+    window.shimIndexedDB,
+  IDBTransaction =
+    window.IDBTransaction ||
+    window.webkitIDBTransaction ||
+    window.msIDBTransaction;
 // baseName = "TrackME",
 // storeName = "TrackMEDB";
 
 function logerr(err) {
-    console.log(err);
+  console.log(err);
 }
 
-function connectDB(baseName,storeName, f) {
+function connectDB(baseName, storeName, f) {
+  // Open (or create) the database
+  var request = indexedDB.open(baseName, 1);
+  request.onerror = logerr;
+  request.onsuccess = function () {
+    f(request.result);
+  };
+  request.onupgradeneeded = function (e) {
+    //console.log("running onupgradeneeded");
+    var Db = e.currentTarget.result; //var Db = e.target.result;
 
-    // Open (or create) the database
-    var request = indexedDB.open(baseName, 1);
-    request.onerror = logerr;
-    request.onsuccess = function () {
-        f(request.result);
+    //uncomment if we want to start clean
+    //if(Db.objectStoreNames.contains(storeName)) Db.deleteObjectStore("note");
+
+    //Create store
+    if (!Db.objectStoreNames.contains(storeName)) {
+      var store = Db.createObjectStore(storeName, {
+        keyPath: "id",
+        autoIncrement: true,
+      });
+      //store.createIndex("NameIndex", ["name.last", "name.first"], { unique: false });
     }
-    request.onupgradeneeded = function (e) {
-        //console.log("running onupgradeneeded");
-        var Db = e.currentTarget.result;//var Db = e.target.result;
-
-        //uncomment if we want to start clean
-        //if(Db.objectStoreNames.contains(storeName)) Db.deleteObjectStore("note");
-
-        //Create store
-        if (!Db.objectStoreNames.contains(storeName)) {
-            var store = Db.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
-            //store.createIndex("NameIndex", ["name.last", "name.first"], { unique: false });
-        }
-        connectDB(baseName, f);
-    }
+    connectDB(baseName, f);
+  };
 }
 
 function get(baseName, storeName, id, f) {
-    connectDB(baseName, storeName, function (db) {
-        var transaction = db.transaction([storeName], "readonly").objectStore(storeName).get(id);
-        transaction.onerror = logerr;
-        transaction.onsuccess = function () {
-            f(transaction.result ? transaction.result : -1);
-        }
-    });
+  connectDB(baseName, storeName, function (db) {
+    var transaction = db
+      .transaction([storeName], "readonly")
+      .objectStore(storeName)
+      .get(id);
+    transaction.onerror = logerr;
+    transaction.onsuccess = function () {
+      f(transaction.result ? transaction.result : -1);
+    };
+  });
 }
 
 function getAll(baseName, storeName, f) {
-    connectDB(baseName, storeName, function (db) {
-        var rows = [],
-            store = db.transaction([storeName], "readonly").objectStore(storeName);
+  connectDB(baseName, storeName, function (db) {
+    var rows = [],
+      store = db.transaction([storeName], "readonly").objectStore(storeName);
 
-        if (store.mozGetAll)
-            store.mozGetAll().onsuccess = function (e) {
-                f(e.target.result);
-            };
-        else
-            store.openCursor().onsuccess = function (e) {
-                var cursor = e.target.result;
-                if (cursor) {
-                    rows.push(cursor.value);
-                    cursor.continue();
-                }
-                else {
-                    f(rows);
-                }
-            };
-    });
+    if (store.mozGetAll)
+      store.mozGetAll().onsuccess = function (e) {
+        f(e.target.result);
+      };
+    else
+      store.openCursor().onsuccess = function (e) {
+        var cursor = e.target.result;
+        if (cursor) {
+          rows.push(cursor.value);
+          cursor.continue();
+        } else {
+          f(rows);
+        }
+      };
+  });
 }
 
-function up(obj) {//obj with id
-    del(obj.id, 'up');
-    add(obj, 'up');
+function deleteAll(baseName, storeName, f) {
+  connectDB(baseName, storeName, function (db) {
+    var store = db.transaction([storeName], "readwrite").objectStore(storeName);
+
+    store.clear();
+    f();
+  });
+}
+
+function up(obj) {
+  //obj with id
+  del(obj.id, "up");
+  add(obj, "up");
 }
 
 function add(baseName, storeName, obj, info, callback) {
-    info = typeof info !== 'undefined' ? false : true;
-    connectDB(baseName, storeName, function (db) {
-        var transaction = db.transaction([storeName], "readwrite");
-        var objectStore = transaction.objectStore(storeName);
-        var objectStoreRequest = objectStore.add(obj);
-        objectStoreRequest.onerror = logerr;
-        objectStoreRequest.onsuccess = function () {
-            if (info) { console.log("Rows has been added"); }
-            else { console.log("Rows has been updated"); }
-            console.info(objectStoreRequest.result);
-            callback( objectStoreRequest.result )
-        }
-    });
+  info = typeof info !== "undefined" ? false : true;
+  connectDB(baseName, storeName, function (db) {
+    var transaction = db.transaction([storeName], "readwrite");
+    var objectStore = transaction.objectStore(storeName);
+    var objectStoreRequest = objectStore.add(obj);
+    objectStoreRequest.onerror = logerr;
+    objectStoreRequest.onsuccess = function () {
+      if (info) {
+        console.log("Rows has been added");
+      } else {
+        console.log("Rows has been updated");
+      }
+      console.info(objectStoreRequest.result);
+      callback(objectStoreRequest.result, obj);
+    };
+  });
 }
 
 function del(baseName, storeName, id, info) {
-    info = typeof info !== 'undefined' ? false : true;
-    connectDB(baseName, storeName, function (db) {
-        var transaction = db.transaction([storeName], "readwrite");
-        var objectStore = transaction.objectStore(storeName);
-        var objectStoreRequest = objectStore.delete(id);
-        objectStoreRequest.onerror = logerr;
-        objectStoreRequest.onsuccess = function () {
-            if (info)
-                console.log("Rows has been deleted: ", id);
-        }
-    });
+  info = typeof info !== "undefined" ? false : true;
+  connectDB(baseName, storeName, function (db) {
+    var transaction = db.transaction([storeName], "readwrite");
+    var objectStore = transaction.objectStore(storeName);
+    var objectStoreRequest = objectStore.delete(id);
+    objectStoreRequest.onerror = logerr;
+    objectStoreRequest.onsuccess = function () {
+      if (info) console.log("Rows has been deleted: ", id);
+    };
+  });
 }
 
 // //add data
