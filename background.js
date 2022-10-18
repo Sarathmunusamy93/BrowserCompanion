@@ -14,7 +14,7 @@ var openURLPrompts = {};
 
 var activeTabID;
 
-chrome.runtime.onMessage.addListener(function (request, sender) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.type == "createAlarmForReminder") {
     var remainder = request.options.remainder,
       name = "remainder_" + request.options.id,
@@ -31,14 +31,29 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     });
   } else if (request.type == "clearLS") {
     chrome.storage.sync.clear();
+  } else if (request.type == "fetchBrowserHistoryCE") {
+    fetchBrowserHistoryCE(sender.tab.id);
   }
 });
+
+// chrome.runtime.onMessage.addListener(
+//   function(request, sender, sendResponse) {
+//       //Alert the message
+
+//       //Construct & send a response
+//       sendResponse({
+//           response: "Message received"
+//       });
+//   }
+// );
+
 
 function createAlarm(name, when) {
   chrome.alarms.create(name, {
     when,
   });
 }
+
 
 function createAlaramForSiteRenew(controlSiteInstance) {
   var name = "CntrlRenew_" + controlSiteInstance.targetUrl,
@@ -57,21 +72,45 @@ chrome.runtime.onInstalled.addListener(async () => {
   console.log(`Created tab ${tab.id}`);
 });
 
-function fetchBrowserHistoryCE(callback) {
-  chrome.history.search({ text: "", maxResults: 10000 }, function (data) {
-    callback(data);
+
+
+function handleHistoryDataSave(data, currentIndex, tabid) {
+
+  let localData = data,
+    Currentdata = localData[currentIndex],
+    URLDetail = {
+      domain: new URL(Currentdata.url).origin,
+      fullURL: Currentdata.url,
+      activeTime: null,
+      noOfVisit: Currentdata.visitCount,
+      lastVisited: Currentdata.lastVisitTime,
+    };
+
+  add(
+    "TrackMeHistoryList",
+    "TrackMeHistoryListDB",
+    URLDetail,
+    false,
+    function (result) {
+
+      if (currentIndex < localData.length - 1) {
+
+        console.log("Total: " + localData.length + "Current: " + currentIndex);
+        handleHistoryDataSave(localData, currentIndex + 1, tabid);
+      } else {
+        chrome.tabs.sendMessage(tabid, { message: "History Loaded" });
+      }
+    }
+  );
+};
+
+
+
+function fetchBrowserHistoryCE(tabsID) {
+  chrome.history.search({ text: "", startTime: 0, maxResults: 10000 }, function (data) {
+    handleHistoryDataSave(data, 0, tabsID);
   });
 }
-
-// function createAlarmForRemainder(remainder, id) {
-//   chrome.alarms.create("remainder_" + id, {
-//     when: new Date(remainder.dateTime).getTime(),
-//   });
-
-//   chrome.alarms.getAll(function (alarms) {
-//     console.log(alarms);
-//   });
-// }
 
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name.includes("remainder_")) {
@@ -168,7 +207,7 @@ function isTabUpdated(tabId, newURL, newTabInfo) {
           diff_mins(new Date().getTime(), tabDetails.startTime);
 
         saveTabInfo(tabDetails);
-        chrome.storage.sync.remove(tabId.toString(), function () {});
+        chrome.storage.sync.remove(tabId.toString(), function () { });
         saveNewTabInfoInLocalStorage(newTabInfo);
         return true;
       } else return false;
@@ -197,7 +236,7 @@ function changeCurrentlyActiveTab(activeTabID, switchedTab) {
 
       chrome.storage.sync.set(
         { [key]: JSON.stringify(tabDetails) },
-        function () {}
+        function () { }
       );
       activeTabID = switchedTab;
     } else if (tabInfo.url != "chrome://newtab/") {
@@ -257,7 +296,7 @@ function setCntrlSiteWatchDog(restrictedSite) {
     message: "You have crossed your limit on this site!!!",
   };
 
-  chrome.notifications.create(notificationOptions, function (id) {});
+  chrome.notifications.create(notificationOptions, function (id) { });
 }
 
 function saveNewTabInfoInLocalStorage(tabInfo) {
@@ -293,7 +332,7 @@ chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
       updateSiteRestrictedTime(tabDetails.domain, tabDetails.activeTime);
     }
     saveTabInfo(tabDetails);
-    chrome.storage.sync.remove(tabId.toString(), function () {});
+    chrome.storage.sync.remove(tabId.toString(), function () { });
   });
 });
 
@@ -353,7 +392,7 @@ function setCurrentTabAsActive(tabId) {
 
       chrome.storage.sync.set(
         { [key]: JSON.stringify(tabDetails) },
-        function () {}
+        function () { }
       );
       activeTabID = key;
     } else {

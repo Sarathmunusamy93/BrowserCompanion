@@ -1,29 +1,29 @@
 document.getElementById("historyImport")
   ? document
-      .getElementById("historyImport")
-      .addEventListener("click", fetchBrowserHistory)
+    .getElementById("historyImport")
+    .addEventListener("click", fetchBrowserHistory)
   : null;
 document.getElementById("startNow")
   ? document
-      .getElementById("startNow")
-      .addEventListener("click", redirectToDashboardPage)
+    .getElementById("startNow")
+    .addEventListener("click", redirectToDashboardPage)
   : null;
 document.getElementById("toogleSideBar")
   ? document
-      .getElementById("toogleSideBar")
-      .addEventListener("click", toogleSideBar)
+    .getElementById("toogleSideBar")
+    .addEventListener("click", toogleSideBar)
   : null;
 document.getElementById("filterStartDate")
   ? document
-      .getElementById("filterStartDate")
-      .addEventListener("change", enableEndDate)
+    .getElementById("filterStartDate")
+    .addEventListener("change", enableEndDate)
   : null;
 //window.addEventListener("beforeunload", closedWindow);
 
 document.getElementById("filterEndDate")
   ? document
-      .getElementById("filterEndDate")
-      .addEventListener("change", advancedFiltering)
+    .getElementById("filterEndDate")
+    .addEventListener("change", advancedFiltering)
   : null;
 
 //document.getElementsByClassName('chartFilterBtn') ? document.getElementsByClassName('chartFilterBtn').addEventListener("click", filterChartData) : null;
@@ -31,8 +31,8 @@ document.addEventListener("DOMContentLoaded", fetchRemainder);
 
 document.getElementById("addRemainder")
   ? document
-      .getElementById("addRemainder")
-      .addEventListener("click", saveRemaindar)
+    .getElementById("addRemainder")
+    .addEventListener("click", saveRemaindar)
   : null;
 
 let URLDetails = [];
@@ -62,32 +62,23 @@ function removeFilterBtnHighlight() {
   $(".chartFilterBtn").css("background-color", white);
 }
 
-function fetchBrowserHistory() {
-  fetchBrowserHistoryCE(function (data) {
-    data.forEach(function (page) {
-      let URLDetail = {
-        domain: new URL(page.url).origin,
-        fullURL: page.url,
-        activeTime: null,
-        noOfVisit: page.visitCount,
-        lastVisited: page.lastVisitTime,
-      };
-
-      setTimeout(() => {
-        add(
-          "TrackMeHistoryList",
-          "TrackMeHistoryListDB",
-          URLDetail,
-          false,
-          function (result) {
-            console.log(result);
-          }
-        );
-      }, 100);
-    });
-
-    redirectToDashboardPage();
+chrome.runtime.onMessage.addListener(
+  function (request, sender, sendResponse) {
+    if (request.message == "History Loaded") { // Filter out other messages
+      redirectToDashboardPage();
+    }
   });
+
+function fetchBrowserHistory() {
+
+  chrome.runtime.sendMessage({
+    type: "fetchBrowserHistoryCE"
+  });
+
+  // setTimeout(() => {
+  //   redirectToDashboardPage();
+  // }, 2000);
+
 }
 function redirectToDashboardPage() {
   let url = chrome.runtime.getURL("MainPage.html");

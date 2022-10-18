@@ -1,6 +1,46 @@
+/*Start Page Style */
+
 #startPageContainer {
   margin: 20% 30%;
+  border-color: #002E94 !important;
+  border: azure;
+  border-style: solid;
+  background-color: white;
+  border-radius: 10px 15px 15px 10px;
+
+  width: 50%;
+  height: 50%;
+  margin-left: 30% !important;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+
+
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
+
+#startPageContainer .column {
+  padding-top: 10%;
+  padding-bottom: 13%;
+}
+
+.column .button {
+  background-color: #2192FF;
+  color: white;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
+
+.startPageBody {
+  background-color: #EDEDED;
+  display: flex;
+  height: 100%;
+}
+
+/*Start Page Style End */
 
 .item {
   height: 25%;
@@ -93,19 +133,4 @@
 
 #chartInfo {
   margin-left: 10%;
-}
-
-#startPageContainer {
-  width: 50%;
-  height: 50%;
-  /* position: absolute; */
-  margin-left: 30% !important;
-  align-items: center;
-  background-color: lightgray;
-  align-content: center;
-  text-align: center;
-}
-
-#startPageContainer .column {
-  padding-top: 20%;
 }

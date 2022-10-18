@@ -21,8 +21,8 @@
         "https://*/*"
       ],
       "js": [
-        "./jquery.min.js",
-        "./utils.js"
+        "jquery.min.js",
+        "utils.js"
       ]
     }
   ]
