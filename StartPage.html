@@ -1,38 +1,32 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>TrackME</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
-    <link rel="stylesheet" href="./main.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"
+    />
+    <link rel="stylesheet" href="./main.css" />
+  </head>
 
-</head>
-
-<body>
-
+  <body>
     <div class="startPageBody">
+      <div class="ui container " id="startPageContainer">
+        <i class="info blue large circle icon"></i>
+        <div class="column">
+          <button class="ui button" id="startNow">Start From Now</button>
 
+          <button class="ui button" id="historyImport">
+            Import from history
+          </button>
 
-        <div class="ui container" id="startPageContainer">
-
-            <div class="column">
-
-
-                <button class="ui button" id="startNow">Start From Now</button>
-
-                <button class="ui button" id="historyImport">Import from history</button>
-            </div>
-
-
+         
         </div>
+      </div>
     </div>
     <script src="./jquery.min.js"></script>
-    <script src="./indexDBModel.js">  </script>
+    <script src="./indexDBModel.js"></script>
     <!-- <script src="./background.js"></script> -->
     <script src="./utils.js"></script>
-
-
-
-</body>
-
+  </body>
 </html>

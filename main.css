@@ -1,20 +1,19 @@
 /*Start Page Style */
 
 #startPageContainer {
-  margin: 20% 30%;
-  border-color: #002E94 !important;
+  margin: 15% 40%;
+  border-color: #002e94 !important;
   border: azure;
   border-style: solid;
   background-color: white;
   border-radius: 10px 15px 15px 10px;
 
-  width: 50%;
-  height: 50%;
-  margin-left: 30% !important;
+  width: 40%;
+  height: 25%;
+  margin-left: 35% !important;
   align-items: center;
   align-content: center;
   text-align: center;
-
 
   display: flex;
   flex-direction: column;
@@ -22,24 +21,34 @@
 }
 
 #startPageContainer .column {
-  padding-top: 10%;
-  padding-bottom: 13%;
+  padding-top: 8%;
+  padding-bottom: 10%;
 }
 
 .column .button {
-  background-color: #2192FF;
+  background-color: #2192ff;
   color: white;
   font-size: 14px;
   font-family: sans-serif;
 }
 
-
 .startPageBody {
-  background-color: #EDEDED;
+  background-color: #ededed;
   display: flex;
   height: 100%;
 }
 
+.circle {
+  margin-right: 10px !important;
+  margin-left: auto !important;
+  margin-top: 5px !important;
+}
+
+.circle:hover{
+
+  background-color: white;
+  color: blue;
+}
 /*Start Page Style End */
 
 .item {
