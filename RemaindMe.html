@@ -6,78 +6,122 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
     <link rel="stylesheet" href="./main.css">
     <link rel="stylesheet" href="./dropdown.min.css">
+    <link rel="stylesheet" href="./calendar.min.css">
 </head>
 
 <body>
     <!-- <script src="./background.js"></script> -->
     <!-- <script src=" https://unpkg.com/idb/build/iife/index-min.js"></script> -->
+    <div class="remindeMeBody">
+    <div class="ui container"   style="
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+    width: 100% !important;
+  " id="RemaindMePageContainer">
 
-    <div class="ui container" id="RemaindMePageContainer">
-
-        <div style="margin-top: 10px" class="ui container">
-            <button class="ui icon button addRemainderbtn" id="addRemainder">Add New Remainder
+        <div class="remindeMeBodyctrl">
+        <div><!-- <div > </div>style="margin-top: 10px" class="ui container"> -->
+            <!-- <button class="ui icon button addRemainderbtn" id="addRemainder">Add New Remainder
                 <i class="huge bell icon addRemainder"></i>
-            </button>
+            </button> -->
 
             <div class="remainderCategory">
             <input type="radio" id="oneTimeReminder" checked>One Time 
             <input type="radio" id="recurringReminder">Recurring
         </div>
             <div class="addNewRemainderForOneTime">
-               
-                <input type="date" id="dateValue" /> <input type="time" id="timeValue" />
-                <textarea id="message" placeholder="Enter Message">
+                <div class="ui calendar" id="dateValue">
+                    <div class="ui input left icon">
+                      <i class="calendar icon"></i>
+                      <input type="text" id="reminderDate" placeholder="Date">
+                    </div>
+                  </div>
 
-                </textarea>
-                <input type="checkbox" id="launchURL"> show any URL to Lanch ?
-                <input type="url" id="targetURL">
+                  <div class="ui calendar" id="timeValue">
+                    <div class="ui input left icon">
+                      <i class="calendar icon"></i>
+                      <input type="text" id="reminderTime" placeholder="time">
+                    </div>
+                  </div>
+                <!-- <input type="date" id="dateValue" /> <input type="time" id="timeValue" /> -->
+                <textarea id="message" placeholder="Enter Message"> </textarea>
+                
+                <div class="lanchURL">
+                <input type="checkbox" id="launchURL"> show any URL to Lanch ?</div>
+                <input type="url" id="targetURL" placeholder="Lauch URL">
+                <button class="ui icon button addRemainderbtn" id="addRemainder">Add New Remainder </button>
+                
             </div>
    
             <div class="addNewRecurringRemainder">
               
-                <select class="ui dropdown recurringDurationOption" id="recurringDaysOptionsValue">
-                    <option class="recurringDaysOptionsValues" value="0" selected>Weekly</option>
-                    <option class="recurringDaysOptionsValues" value="1">Monthly</option>
+                <select class="ui dropdown recurringDurationOption" id="recurringDaysOptionsValue" style="width: 100px" >
+                    <option class="recurringDaysOptionsValues" value="0" selected style="color:black">Weekly</option>
+                    <option class="recurringDaysOptionsValues" value="1" style="color:black">Monthly</option>
                   </select>
 
+                  <div class="ui calendar" id="recurringDate">
+                    <div class="ui input left icon">
+                      <i class="calendar icon"></i>
+                      <input type="text" id="recurringDateValue" placeholder="Date/Time">
+                    </div>
+                  </div>
 
-                <input type="date" id="recurringDateValue" />
+                <!-- <input type="date" id="recurringDateValue" /> -->
 
                 <select class="ui dropdown recurringDurationOptionDays" id="recurringDaysOptions">
                     <option value="0" selected>All Days</option>
                   </select>
+                  <div class="ui calendar" id="recurringTime">
+                    <div class="ui input left icon">
+                      <i class="calendar icon"></i>
+                      <input type="text" id="recurringTimeValue" placeholder="time">
+                    </div>
+                  </div>
 
+                  <textarea id="recurringMessage" placeholder="Enter Message"> </textarea>
+                <!-- <input type="time" id="recurringTimeValue" /> -->
+                <div class="lanchURL">
+                <input type="checkbox" id="launchURL"> show any URL to Lanch ? </div>
+                <input type="url" id="recurringTargetURL" placeholder="Lauch URL">
 
+                <button class="ui icon button addRemainderbtn" id="addRecurringRemainder">Add New Remainder </button>
 
-                <input type="time" id="recurringTimeValue" />
-
-                <input type="checkbox" id="launchURL"> show any URL to Lanch ?
-                <input type="url" id="targetURL">
             </div>
-
+        </div>
 
         </div>
 
         <div class="ui sidebar  
-                    vertical menu visible">
-            <h2 class="SideBarTitle">Track Me</h2>
+                    vertical menu visible"  style="
+                    margin-left: 10px !important;
+                    height: 98% !important;
+                    margin-top: 5px !important;
+                    border-color: #002e94;
+                    width: 15%;
+                  ">
+            
 
-            <i id="toogleSideBar" class="chevron right icon"></i>
+            <a class="item appName"> APP NAME </a>
 
-            <a class="item" href="./MainPage.html">
-                Dashboard
+            <a class="item" href="./MainPage.html"> History Dashboard </a>
+            <a
+              class="item"
+              href="./ControlMe.html"
+            >
+              Control Me
             </a>
-            <a class="item" href="./ControlMe.html">
-                Control Me
-            </a>
-            <a class="item">
-                Remaind Me
-            </a>
+            <a class="item"   style="
+            background-color: #2192ff !important;
+            color: white !important;
+          " href="./RemaindMe.html"> Remaind Me </a>
+
         </div>
 
         <table class="ui celled table" id="remaindMeDetails">
             <thead>
                 <tr>
+                    <th>Type</th>
                     <th>Date and Time</th>
                     <th>Message</th>
                     <th>URL</th>
@@ -91,7 +135,7 @@
 
 
 
-    </div>
+    </div></div>
 
     </div>
 
@@ -104,6 +148,7 @@
     <script src="./semanticUI.min.js"></script>
     <script src="./moment.min.js"></script>
     <script src="./dropdown.min.js"></script>
+    <script src="./calendar.min.js"></script>
     <!--  <script src="./bootstrap-datetimepicker.min.js"></script>
     <script src="./bootstrap.min.js"></script> -->
 

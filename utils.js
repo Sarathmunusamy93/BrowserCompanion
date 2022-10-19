@@ -1,29 +1,29 @@
 document.getElementById("historyImport")
   ? document
-    .getElementById("historyImport")
-    .addEventListener("click", fetchBrowserHistory)
+      .getElementById("historyImport")
+      .addEventListener("click", fetchBrowserHistory)
   : null;
 document.getElementById("startNow")
   ? document
-    .getElementById("startNow")
-    .addEventListener("click", redirectToDashboardPage)
+      .getElementById("startNow")
+      .addEventListener("click", redirectToDashboardPage)
   : null;
 document.getElementById("toogleSideBar")
   ? document
-    .getElementById("toogleSideBar")
-    .addEventListener("click", toogleSideBar)
+      .getElementById("toogleSideBar")
+      .addEventListener("click", toogleSideBar)
   : null;
 document.getElementById("filterStartDate")
   ? document
-    .getElementById("filterStartDate")
-    .addEventListener("change", enableEndDate)
+      .getElementById("filterStartDate")
+      .addEventListener("change", enableEndDate)
   : null;
 //window.addEventListener("beforeunload", closedWindow);
 
 document.getElementById("filterEndDate")
   ? document
-    .getElementById("filterEndDate")
-    .addEventListener("change", advancedFiltering)
+      .getElementById("filterEndDate")
+      .addEventListener("change", advancedFiltering)
   : null;
 
 //document.getElementsByClassName('chartFilterBtn') ? document.getElementsByClassName('chartFilterBtn').addEventListener("click", filterChartData) : null;
@@ -31,8 +31,14 @@ document.addEventListener("DOMContentLoaded", fetchRemainder);
 
 document.getElementById("addRemainder")
   ? document
-    .getElementById("addRemainder")
-    .addEventListener("click", saveRemaindar)
+      .getElementById("addRemainder")
+      .addEventListener("click", saveRemaindar)
+  : null;
+
+document.getElementById("addRecurringRemainder")
+  ? document
+      .getElementById("addRecurringRemainder")
+      .addEventListener("click", saveRemaindar)
   : null;
 
 let URLDetails = [];
@@ -62,23 +68,21 @@ function removeFilterBtnHighlight() {
   $(".chartFilterBtn").css("background-color", white);
 }
 
-chrome.runtime.onMessage.addListener(
-  function (request, sender, sendResponse) {
-    if (request.message == "History Loaded") { // Filter out other messages
-      redirectToDashboardPage();
-    }
-  });
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  if (request.message == "History Loaded") {
+    // Filter out other messages
+    redirectToDashboardPage();
+  }
+});
 
 function fetchBrowserHistory() {
-
   chrome.runtime.sendMessage({
-    type: "fetchBrowserHistoryCE"
+    type: "fetchBrowserHistoryCE",
   });
 
   // setTimeout(() => {
   //   redirectToDashboardPage();
   // }, 2000);
-
 }
 function redirectToDashboardPage() {
   let url = chrome.runtime.getURL("MainPage.html");
@@ -344,6 +348,21 @@ $(document).ready(function () {
     },
   });
 
+  $("#dateValue").calendar({ type: "date" });
+
+  $("#timeValue").calendar({ type: "time" });
+  $("#recurringTime").calendar({ type: "time" });
+  $("#recurringDate").calendar({ type: "date" });
+
+  $("#recurringReminder").click(function () {
+    $("#recurringReminder").attr("checked", true);
+    $("#oneTimeReminder").attr("checked", false);
+  });
+  $("#oneTimeReminder").click(function () {
+    $("#recurringReminder").attr("checked", false);
+    $("#oneTimeReminder").attr("checked", true);
+  });
+
   moment.weekdays().forEach(function (day, index) {
     var optionDom = '<option value="' + (index + 1) + '">' + day + "</div>";
     $("#recurringDaysOptions").append(optionDom);
@@ -403,10 +422,13 @@ function handleRecurreringDurationChange(val) {
 function fetchRemainder() {
   renderRemainder = function (results) {
     results.forEach(function (remainder, index) {
+      let frequency = remainder.isRecurring ? remainder.frequency : "One Time";
       var tblRow =
         '  <tr id="row' +
         index +
-        '">  <td data-label="DateTime">  ' +
+        '">  <td data-label="recurringFrequency">  ' +
+        frequency +
+        '   <td data-label="DateTime">  ' +
         remainder.dateTime +
         '  </td>  <td data-label="Message"> ' +
         remainder.Message +
@@ -428,19 +450,36 @@ function fetchRemainder() {
 }
 
 function saveRemaindar() {
-  var dateTime = $("#dateValue").val() + " " + $("#timeValue").val();
+  // var dateTime = $("#dateValue").val() + " " + $("#reminderTime").val();
 
-  var remainder = {
-    dateTime: $("#dateValue").val() + " " + $("#timeValue").val(),
-    Message: $("#message").val(),
-    isURLLaunchEnabled: $("#launchURL").is(":checked"),
-    targetURL: $("#targetURL").val(),
-  };
+  let isRecurringRemainder = $("#recurringReminder").attr("checked"),
+    remainder = {};
+
+  if (isRecurringRemainder) {
+    remainder = {
+      dateTime:
+        $("#recurringDaysOptions :selected").text() +
+        " " +
+        $("#recurringTimeValue").val(),
+      Message: $("#recurringMessage").val(),
+      isURLLaunchEnabled: $("#launchURL").is(":checked"),
+      targetURL: $("#recurringTargetURL").val(),
+      frequency: $("#recurringDaysOptionsValue :selected").text(),
+      isRecurring: true,
+    };
+  } else {
+    remainder = {
+      dateTime: $("#reminderDate").val() + " " + $("#reminderTime").val(),
+      Message: $("#message").val(),
+      isURLLaunchEnabled: $("#launchURL").is(":checked"),
+      targetURL: $("#targetURL").val(),
+      isRecurring: false,
+    };
+  }
 
   setAlarmForReminder = function (result) {
     $("#RemainderTableBody").html("");
     fetchRemainder();
-
     //createAlarmForRemainder(remainder, result);
     //code to send message to open notification. This will eventually move into my extension logic
     chrome.runtime.sendMessage({

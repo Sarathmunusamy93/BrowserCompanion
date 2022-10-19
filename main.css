@@ -32,7 +32,8 @@
   font-family: sans-serif;
 }
 
-.startPageBody {
+.startPageBody,
+.remindeMeBody {
   background-color: #ededed;
   display: flex;
   height: 100%;
@@ -44,28 +45,53 @@
   margin-top: 5px !important;
 }
 
-.circle:hover{
-
+.circle:hover {
   background-color: white;
   color: blue;
 }
 /*Start Page Style End */
 
+.appName {
+  height: 15% !important;
+}
 .item {
-  height: 25%;
+  height: 28%;
   font-size: larger;
   align-items: center;
   align-content: center;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-color: #002e94;
+  color: #2192ff !important;
+}
+
+.ui.dropdown .menu .item {
+  color: black;
 }
 
 .SideBarTitle {
   bottom: 50px;
 }
+/* nav bar */
 
+/* dashboard area */
 .dashboardContainer {
-  margin: 20px 60px;
+  margin: 10px 60px;
   display: flex;
   gap: 15px;
+}
+
+.dashboardBody,
+.controlMeUserInput,
+.remindeMeBodyctrl {
+  background-color: white !important;
+  margin-left: 17%;
+  margin-right: 2%;
+  margin-top: 5px !important;
+  width: 82%;
+  border: solid #002e94;
+  border-width: 1px;
 }
 
 .chartArea {
@@ -75,30 +101,66 @@
   margin: 40px 200px;
 }
 
-#histroyDetails {
-  margin: 5px 200px !important;
+#histroyDetails,
+#controlsDetails,
+#remaindMeDetails {
+  margin-left: 17%;
+  margin-right: 2%;
+  margin-top: 5px !important;
+  width: 82%;
+  border: solid #002e94;
+  border-width: 1px;
+}
+
+#historyTableHeaders #row {
+  color: blue !important;
 }
 
 #siteHistroyDetails {
-  margin: 5px 200px !important;
+  margin-left: 17%;
+  margin-right: 2%;
+  margin-top: 5px !important;
+  width: 82%;
+  border: solid #002e94;
+  border-width: 1px;
 }
 
+.controlMePageBody {
+  background-color: #ededed;
+  display: flex;
+  height: 100%;
+}
+
+.controlMeUserInput {
+  height: 20%;
+}
 .addRemainder {
   color: darkseagreen;
 }
 
 .addRemainderbtn {
-  margin: 0px 40% !important;
+  margin: 0px 0% !important;
+}
+
+.lanchURL {
+  margin-top: 18px;
+  font-size: 15px;
 }
 
 .addNewRemainderForOneTime {
-  margin: 10px 20%;
+  margin: 15px 5%;
+  display: flex;
+  flex-direction: row;
   width: 100%;
+  gap: 15px;
 }
 
 .addNewRecurringRemainder {
-  margin: 10px 20%;
+  margin: 15px 5%;
+  display: flex;
+  flex-direction: row;
   width: 100%;
+  gap: 13px;
 }
 
 #controlMePageContainer {
@@ -112,10 +174,6 @@
 
 #controlsDetails {
   margin-top: 5%;
-}
-
-#remaindMeDetails {
-  margin-left: 50px;
 }
 
 #resetChart {
