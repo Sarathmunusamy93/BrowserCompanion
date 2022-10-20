@@ -1,29 +1,29 @@
 document.getElementById("historyImport")
   ? document
-      .getElementById("historyImport")
-      .addEventListener("click", fetchBrowserHistory)
+    .getElementById("historyImport")
+    .addEventListener("click", fetchBrowserHistory)
   : null;
 document.getElementById("startNow")
   ? document
-      .getElementById("startNow")
-      .addEventListener("click", redirectToDashboardPage)
+    .getElementById("startNow")
+    .addEventListener("click", redirectToDashboardPage)
   : null;
 document.getElementById("toogleSideBar")
   ? document
-      .getElementById("toogleSideBar")
-      .addEventListener("click", toogleSideBar)
+    .getElementById("toogleSideBar")
+    .addEventListener("click", toogleSideBar)
   : null;
 document.getElementById("filterStartDate")
   ? document
-      .getElementById("filterStartDate")
-      .addEventListener("change", enableEndDate)
+    .getElementById("filterStartDate")
+    .addEventListener("change", enableEndDate)
   : null;
 //window.addEventListener("beforeunload", closedWindow);
 
 document.getElementById("filterEndDate")
   ? document
-      .getElementById("filterEndDate")
-      .addEventListener("change", advancedFiltering)
+    .getElementById("filterEndDate")
+    .addEventListener("change", advancedFiltering)
   : null;
 
 //document.getElementsByClassName('chartFilterBtn') ? document.getElementsByClassName('chartFilterBtn').addEventListener("click", filterChartData) : null;
@@ -31,14 +31,14 @@ document.addEventListener("DOMContentLoaded", fetchRemainder);
 
 document.getElementById("addRemainder")
   ? document
-      .getElementById("addRemainder")
-      .addEventListener("click", saveRemaindar)
+    .getElementById("addRemainder")
+    .addEventListener("click", saveRemaindar)
   : null;
 
 document.getElementById("addRecurringRemainder")
   ? document
-      .getElementById("addRecurringRemainder")
-      .addEventListener("click", saveRemaindar)
+    .getElementById("addRecurringRemainder")
+    .addEventListener("click", saveRemaindar)
   : null;
 
 let URLDetails = [];
@@ -369,6 +369,8 @@ $(document).ready(function () {
   });
 
   $("#recurringDateValue").hide();
+  $(".recurringDurationOptionDays").hide();
+
 
   $(".addNewRecurringRemainder").hide();
   $("#recurringReminder").click(function () {
@@ -385,6 +387,9 @@ $(document).ready(function () {
     } else if (selectedText == "Weekly") {
       $("#recurringDateValue").hide();
       $(".recurringDurationOptionDays").show();
+    } else {
+      $("#recurringDateValue").hide();
+      $(".recurringDurationOptionDays").hide();
     }
   });
 
@@ -453,12 +458,13 @@ function saveRemaindar() {
   // var dateTime = $("#dateValue").val() + " " + $("#reminderTime").val();
 
   let isRecurringRemainder = $("#recurringReminder").attr("checked"),
-    remainder = {};
+    remainder = {},
+    requency = $("#recurringDaysOptionsValue :selected").text();
 
   if (isRecurringRemainder) {
     remainder = {
       dateTime:
-        $("#recurringDaysOptions :selected").text() +
+        (requency != "Monthly" ? $("#recurringDaysOptions :selected").text() : $("#recurringDateValue").val()) +
         " " +
         $("#recurringTimeValue").val(),
       Message: $("#recurringMessage").val(),

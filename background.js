@@ -18,8 +18,27 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.type == "createAlarmForReminder") {
     var remainder = request.options.remainder,
       name = "remainder_" + request.options.id,
-      when = new Date(remainder.dateTime).getTime();
-    createAlarm(name, when);
+      when = new Date(remainder.dateTime).getTime(),
+      options = {};
+
+    if (remainder.isRecurring) {
+      if (remainder.frequency == "Weekly") {
+        options = {
+          when,
+          periodInMinutes: 10080
+        }
+      } else if (remainder.isRecurring == "Daily") {
+        options = {
+          when,
+          periodInMinutes: 60
+        }
+      }
+    } else {
+      options = {
+        when
+      }
+    }
+    createAlarm(name, options);
   } else if (request.type == "createAlarmForControlRenewal") {
     var cntrlSiteDetails = request.options.controlSiteInstance;
     createAlaramForSiteRenew(cntrlSiteDetails);
@@ -48,10 +67,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 // );
 
 
-function createAlarm(name, when) {
-  chrome.alarms.create(name, {
-    when,
-  });
+function createAlarm(name, options) {
+  chrome.alarms.create(name, options);
 }
 
 
@@ -61,7 +78,7 @@ function createAlaramForSiteRenew(controlSiteInstance) {
     nxtRenewDate = new Date(
       today.setDate(today.getDate() + controlSiteInstance.basis)
     );
-  createAlarm(name, nxtRenewDate);
+  createAlarm(name, { when: nxtRenewDate });
 }
 
 chrome.runtime.onInstalled.addListener(async () => {
@@ -139,7 +156,32 @@ chrome.alarms.onAlarm.addListener((alarm) => {
       chrome.notifications.create(notificationOptions, function (id) {
         openURLPrompts[id] = { targetURL };
 
-        del("RemaindME", "RemaindMEDB", remainder_id);
+        getRemainderForAlarm(remainder_id, function (remainder_obj) {
+
+          if (!remainder_obj.isRecurring) {
+            del("RemaindME", "RemaindMEDB", remainder_id);
+          } else {
+            if (remainder_obj.frequency == "Monthly") {
+
+              let name = "remainder_" + remainder_id,
+                remainderDate = remainder.dateTime,
+                targetMonth = new Date().getMonth() + 1,
+                targetDate = new Date(remainderDate).getDate(),
+                targetHour = new Date(remainderDate).getHours(),
+                targetMinutes = new Date(remainderDate).getMinutes();
+
+              let nextReminderDate = new Date();
+
+              nextReminderDate.setMonth(targetMonth);
+              nextReminderDate.setDate(targetDate);
+              nextReminderDate.setHours(targetHour);
+              nextReminderDate.setMinutes(targetMinutes);
+
+
+              createAlarm(name, { when: nextReminderDate });
+            }
+          }
+        });
       });
     });
   } else if (alarm.name.includes("CntrlRenew_")) {
