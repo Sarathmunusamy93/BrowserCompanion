@@ -1,29 +1,29 @@
 document.getElementById("historyImport")
   ? document
-    .getElementById("historyImport")
-    .addEventListener("click", fetchBrowserHistory)
+      .getElementById("historyImport")
+      .addEventListener("click", fetchBrowserHistory)
   : null;
 document.getElementById("startNow")
   ? document
-    .getElementById("startNow")
-    .addEventListener("click", redirectToDashboardPage)
+      .getElementById("startNow")
+      .addEventListener("click", redirectToDashboardPage)
   : null;
 document.getElementById("toogleSideBar")
   ? document
-    .getElementById("toogleSideBar")
-    .addEventListener("click", toogleSideBar)
+      .getElementById("toogleSideBar")
+      .addEventListener("click", toogleSideBar)
   : null;
 document.getElementById("filterStartDate")
   ? document
-    .getElementById("filterStartDate")
-    .addEventListener("change", enableEndDate)
+      .getElementById("filterStartDate")
+      .addEventListener("change", enableEndDate)
   : null;
 //window.addEventListener("beforeunload", closedWindow);
 
 document.getElementById("filterEndDate")
   ? document
-    .getElementById("filterEndDate")
-    .addEventListener("change", advancedFiltering)
+      .getElementById("filterEndDate")
+      .addEventListener("change", advancedFiltering)
   : null;
 
 //document.getElementsByClassName('chartFilterBtn') ? document.getElementsByClassName('chartFilterBtn').addEventListener("click", filterChartData) : null;
@@ -31,14 +31,14 @@ document.addEventListener("DOMContentLoaded", fetchRemainder);
 
 document.getElementById("addRemainder")
   ? document
-    .getElementById("addRemainder")
-    .addEventListener("click", saveRemaindar)
+      .getElementById("addRemainder")
+      .addEventListener("click", saveRemaindar)
   : null;
 
 document.getElementById("addRecurringRemainder")
   ? document
-    .getElementById("addRecurringRemainder")
-    .addEventListener("click", saveRemaindar)
+      .getElementById("addRecurringRemainder")
+      .addEventListener("click", saveRemaindar)
   : null;
 
 let URLDetails = [];
@@ -47,6 +47,7 @@ var pieChart;
 
 $("#resetChart").click(function (event) {
   $(".chartFilterBtn").attr("style", "background-color:white");
+  domainDetails = {};
   showBrowserHistroyData(null);
 });
 
@@ -204,8 +205,8 @@ function renderSiteHistroyOnTable(vistedData, label) {
 
   $("#tblheaderRow").html("");
   $("#activesTableBody").html("");
-
-  $("#chartInfo").html(label);
+  $("#chartInfo").show();
+  $("#chartInfo").html(label + " - " + vistedData.length);
 
   var tblheaderRow =
     '<tr id="row">  <th> Date  </th>  <th> Mins Spend </th> </tr>';
@@ -309,6 +310,7 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
     } else {
       $("#siteHistroyDetails").hide();
       $("#histroyDetails").show();
+      $("#chartInfo").hide();
     }
   };
 }
@@ -371,7 +373,6 @@ $(document).ready(function () {
   $("#recurringDateValue").hide();
   $(".recurringDurationOptionDays").hide();
 
-
   $(".addNewRecurringRemainder").hide();
   $("#recurringReminder").click(function () {
     $(".addNewRecurringRemainder").show();
@@ -426,29 +427,36 @@ function handleRecurreringDurationChange(val) {
 
 function fetchRemainder() {
   renderRemainder = function (results) {
-    results.forEach(function (remainder, index) {
-      let frequency = remainder.isRecurring ? remainder.frequency : "One Time";
-      var tblRow =
-        '  <tr id="row' +
-        index +
-        '">  <td data-label="recurringFrequency">  ' +
-        frequency +
-        '   <td data-label="DateTime">  ' +
-        remainder.dateTime +
-        '  </td>  <td data-label="Message"> ' +
-        remainder.Message +
-        " </td> " +
-        '<td data-label="TargetURL"> ' +
-        remainder.targetURL +
-        " </td>" +
-        "</td> " +
-        '<td data-label="TargetURL"> <i class="large delete outline icon" id=' +
-        remainder.id +
-        '></i> <i class="large edit outline icon"></i></td>' +
-        "<tr>";
+    if (results.length < 1) {
+      let emptyRow =
+        '  <tr id="row"> <td data-label="DateTime" colSpan="5" style="text-align: center"> Add Any Reminder To Show Here!!!! </td></tr> ';
+      $(" #RemainderTableBody ").append(emptyRow);
+    } else {
+      results.forEach(function (remainder, index) {
+        let frequency = remainder.isRecurring
+          ? remainder.frequency
+          : "One Time";
+        var tblRow =
+          '  <tr id="row' +
+          index +
+          '">  <td data-label="recurringFrequency">  ' +
+          frequency +
+          '   <td data-label="DateTime">  ' +
+          remainder.dateTime +
+          '  </td>  <td data-label="Message"> ' +
+          remainder.Message +
+          " </td> " +
+          '<td data-label="TargetURL"> ' +
+          remainder.targetURL +
+          " </td>" +
+          '<td data-label="TargetURL"> <i class="large delete outline icon" id=' +
+          remainder.id +
+          '></i> <i class="large edit outline icon"></i></td>' +
+          "<tr>";
 
-      $(" #RemainderTableBody ").append(tblRow);
-    });
+        $(" #RemainderTableBody ").append(tblRow);
+      });
+    }
   };
 
   getAll("RemaindME", "RemaindMEDB", renderRemainder);
@@ -464,7 +472,9 @@ function saveRemaindar() {
   if (isRecurringRemainder) {
     remainder = {
       dateTime:
-        (requency != "Monthly" ? $("#recurringDaysOptions :selected").text() : $("#recurringDateValue").val()) +
+        (requency != "Monthly"
+          ? $("#recurringDaysOptions :selected").text()
+          : $("#recurringDateValue").val()) +
         " " +
         $("#recurringTimeValue").val(),
       Message: $("#recurringMessage").val(),

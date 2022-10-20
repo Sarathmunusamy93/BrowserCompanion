@@ -122,29 +122,49 @@ function saveControlSiteInlocalStorage(cntrlSiteDetails) {
 }
 function renderControlSitesList() {
   fun = function (results) {
-    results.forEach((result, index) => {
-      var statusButton = result.status
-        ? '<button class="ui toggle button active" id="controlStatus">Active</button> '
-        : '<button class="ui toggle button" id="controlStatus">Disabled</button> ';
+    if (results.length < 1) {
+      let emptyRow =
+        '  <tr id="row"> <td data-label="DateTime" colSpan="5" style="text-align: center"> Add Any Controls To Show Here!!!! </td></tr> ';
+      $(" #controlsDetailsTableBody ").append(emptyRow);
+    } else {
+      results.forEach((result, index) => {
+        var statusButton = result.status
+          ? '<button class="ui toggle button active" id="controlStatus">Active</button> '
+          : '<button class="ui toggle button" id="controlStatus">Disabled</button> ';
 
-      var tblRow =
-        '  <tr id="row' +
-        index +
-        '"> <td data-label="DateTime"> ' +
-        statusButton +
-        '  </td>  <td data-label="DateTime">  ' +
-        result.targetURL +
-        '  </td>  <td data-label="Message"> ' +
-        result.basis +
-        " </td> " +
-        '<td data-label="TargetURL"> ' +
-        result.hours +
-        " </td></tr>";
+        var tblRow =
+          '  <tr id="row' +
+          index +
+          '"> <td data-label="DateTime"> ' +
+          statusButton +
+          '  </td>  <td data-label="DateTime">  ' +
+          result.targetURL +
+          '  </td>  <td data-label="Message"> ' +
+          result.basis +
+          " </td> " +
+          '<td data-label="TargetURL"> ' +
+          result.hours +
+          " </td>" +
+          '<td data-label="TargetURL"> <i class="large delete outline icon" id=' +
+          result.id +
+          '></i> <i class="large edit outline icon"></i></td>' +
+          "</tr>";
 
-      $(" #controlsDetailsTableBody ").append(tblRow);
-    });
+        $(" #controlsDetailsTableBody ").append(tblRow);
+      });
+    }
   };
 
   $(" #controlsDetailsTableBody ").html("");
   getAll("controlSiteBase", "ControlSiteDB", fun);
+}
+
+$(document.body).on("click", ".delete", function (event) {
+  deleteControls(parseInt(event.target.id));
+  $("#controlsDetailsTableBody").html("");
+  renderControlSitesList();
+});
+
+function deleteControls(id) {
+  del("controlSiteBase", "ControlSiteDB", id, true);
 }
