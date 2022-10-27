@@ -318,6 +318,7 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
       $("#siteHistroyDetails").hide();
       $("#histroyDetails").show();
       $("#chartInfo").hide();
+      $(".helperChartsContainer").hide();
     }
   };
 }
@@ -345,6 +346,7 @@ function renderhelperCharts(visitedDetails) {
     "Saturday",
   ];
 
+  $(".helperChartsContainer").show();
   visitedDetails.forEach(function (data, index) {
     if (data.lastVisited) {
       let currentDay = weekday[data.lastVisited.getDay()],
@@ -379,7 +381,7 @@ function renderDaysChart(dataByDate) {
 
         // backgroundColor: getColorForItems(7),
         fill: false,
-        backgroundColor: '#3498db'
+        backgroundColor: "#3498db",
       },
     ],
   };
@@ -407,9 +409,8 @@ function renderHoursChart(dataByHours) {
       {
         data: Object.values(dataByHours),
 
-        // backgroundColor: getColorForItems(7),
         fill: false,
-     
+
         backgroundColor: "pink",
       },
     ],

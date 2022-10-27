@@ -97,9 +97,17 @@
   /* margin-right: 2%; */
   margin-top: 69px !important;
   width: 100%;
-  border: solid #002e94;
-  border-width: 1px;
+  /* border: solid #002e94;
+  border-width: 1px; */
 }
+
+#histroyDetails,
+#siteHistroyDetails {
+  display: block;
+  overflow: scroll;
+  height: 400px;
+}
+
 .weekChart,
 .hoursChart,
 .daysChart {
@@ -116,6 +124,8 @@
     height: 500px; */
   margin: 40px 200px;
   width: 70% !important;
+  margin-right: -10% !important;
+  margin-left: -5% !important;
 }
 
 #navContainer {
@@ -136,7 +146,6 @@
   color: white !important;
 }
 
-#histroyDetails,
 #controlsDetails,
 #remaindMeDetails {
   /* margin-left: 17%; */
@@ -164,11 +173,11 @@
 
 #siteHistroyDetails {
   /* margin-left: 17%; */
-  margin-right: 2%;
+  /* margin-right: 2%;
   margin-top: 5px !important;
   width: 40%;
   border: solid #002e94;
-  border-width: 1px;
+  border-width: 1px; */
 }
 
 .controlMePageBody {
