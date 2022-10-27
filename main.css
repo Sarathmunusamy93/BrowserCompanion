@@ -34,9 +34,9 @@
 
 .startPageBody,
 .remindeMeBody {
-  background-color: #ededed;
+  background-color: #fff;
   display: flex;
-  height: 100%;
+  height: auto;
 }
 
 .circle {
@@ -82,32 +82,67 @@
   gap: 15px;
 }
 
+.siteRepresentation {
+  display: flex;
+  flex-direction: row;
+}
+
 .dashboardBody,
 .controlMeUserInput,
 .remindeMeBodyctrl {
   background-color: white !important;
-  margin-left: 17%;
-  margin-right: 2%;
-  margin-top: 5px !important;
-  width: 82%;
+  display: flex;
+  flex-direction: column;
+  /* margin-left: 17%; */
+  /* margin-right: 2%; */
+  margin-top: 69px !important;
+  width: 100%;
   border: solid #002e94;
   border-width: 1px;
 }
-
+.weekChart,
+.hoursChart,
+.daysChart {
+  display: block;
+  /* width: 600px;
+    height: 500px; */
+  /* margin: 40px 200px; */
+  width: 48% !important;
+  height: 200px !important;
+}
 .chartArea {
   display: block;
   /* width: 600px;
     height: 500px; */
   margin: 40px 200px;
+  width: 70% !important;
+}
+
+#navContainer {
+  height: 70px !important;
+}
+
+#navContainer .item {
+  height: 100%;
+  width: 15%;
+}
+
+#navContainer .title {
+  width: 20% !important;
+}
+
+#navContainer .selected {
+  background-color: #2192ff !important;
+  color: white !important;
 }
 
 #histroyDetails,
 #controlsDetails,
 #remaindMeDetails {
-  margin-left: 17%;
-  margin-right: 2%;
+  /* margin-left: 17%; */
+  /* margin-right: 2%; */
   margin-top: 5px !important;
-  width: 82%;
+  width: 100%;
   border: solid #002e94;
   border-width: 1px;
 }
@@ -116,23 +151,37 @@
   color: blue !important;
 }
 
+.helperCharts,
+.helperCharts2 {
+  display: flex;
+  flex-direction: row;
+}
+
+.helperChartsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
 #siteHistroyDetails {
-  margin-left: 17%;
+  /* margin-left: 17%; */
   margin-right: 2%;
   margin-top: 5px !important;
-  width: 82%;
+  width: 40%;
   border: solid #002e94;
   border-width: 1px;
 }
 
 .controlMePageBody {
-  background-color: #ededed;
+  background-color: #fff;
   display: flex;
   height: 100%;
 }
 
 .controlMeUserInput {
   height: 20%;
+  margin-top: 100px !important;
+  width: 80% !important;
+  margin-left: 10% !important;
 }
 .addRemainder {
   color: darkseagreen;
@@ -173,13 +222,21 @@
 }
 
 #controlsDetails {
-  margin-top: 5%;
+  margin-top: 7%;
+
+  width: 80% !important;
+  margin-left: 10% !important;
 }
 
 #resetChart {
   color: black !important;
+  background-color: #ededed !important;
 }
 
+.chartFilterBtn:hover {
+  border-color: #002e94 !important;
+  color: #002e94 !important;
+}
 .remainderCategory {
   margin: 2% 0% 0px 35%;
 }

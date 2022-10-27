@@ -7,96 +7,115 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"
     />
     <link rel="stylesheet" href="./main.css" />
+    <!-- <link rel="stylesheet" href="./bootstrap.min.css" /> -->
   </head>
 
   <body>
     <div class="startPageBody">
-      <div
-        class="ui container"
-        style="
-          margin-right: 0px !important;
-          margin-left: 0px !important;
-          width: 100% !important;
-        "
-      >
-        <div class="dashboardBody">
-          <div class="dashboardContainer">
-            <button
-              class="ui pink basic button chartFilterBtn"
-              id="todayFilter"
-            >
-              Today
-            </button>
-            <button class="ui pink basic button chartFilterBtn" id="weekFilter">
-              Last Week
-            </button>
-            <button
-              class="ui pink basic button chartFilterBtn"
-              id="monthFilter"
-            >
-              Last Month
-            </button>
-            <button class="ui pink basic button chartFilterBtn" id="yearFilter">
-              Last Year
-            </button>
-            From <input type="date" id="filterStartDate" /> to
-            <input type="date" id="filterEndDate" disabled />
-            <button class="ui gray basic button" id="resetChart">Reset</button>
-            <button class="negative ui button" id="clearAllHistoryItems">
-              Clear all Data
-            </button>
-          </div>
+      <div class="ui top fixed menu" id="navContainer">
+        <div class="item title">
+          <img src="./img/android.png" width="100%" /> Browser Companion
+        </div>
+        <a class="item selected">History Dashboard</a>
+        <a class="item" href="./ControlMe.html"> Control Me </a>
+        <a class="item" href="./RemaindMe.html"> Remaind Me </a>
+      </div>
+      <div class="dashboardBody">
+        <div class="dashboardContainer">
+          <button class="ui blue basic button chartFilterBtn" id="todayFilter">
+            Today
+          </button>
+          <button class="ui blue basic button chartFilterBtn" id="weekFilter">
+            Last Week
+          </button>
+          <button class="ui blue basic button chartFilterBtn" id="monthFilter">
+            Last Month
+          </button>
+          <button class="ui blue basic button chartFilterBtn" id="yearFilter">
+            Last Year
+          </button>
+          <label style="font-size: 16px; margin-top: 6px">From</label>
+          <input type="date" id="filterStartDate" style="text-align: center" />
+          <label style="font-size: 16px; margin-top: 6px">To</label>
+          <input
+            type="date"
+            id="filterEndDate"
+            style="text-align: center"
+            disabled
+          />
+          <button class="ui gray basic button" id="resetChart">
+            Reset Filters
+          </button>
+          <button class="negative ui button" id="clearAllHistoryItems">
+            Clear all Data
+          </button>
+        </div>
+        <div class="siteRepresentation">
           <div class="chartArea">
-            <canvas id="siteHisoryChart" width="60%" height="30%"></canvas>
+            <canvas
+              id="siteHisoryChart"
+              width="60% !important"
+              height="30% !important"
+            ></canvas>
           </div>
-        </div>
-        <div id="chartInfo"></div>
-        <table class="ui celled sortable table" id="histroyDetails">
-          <thead id="historyTableHeaders"></thead>
-          <tbody id="historyTableBody"></tbody>
-        </table>
+          <div class="tabularDetails">
+            <div id="chartInfo"></div>
+            <table class="ui celled sortable table" id="histroyDetails">
+              <thead id="historyTableHeaders"></thead>
+              <tbody id="historyTableBody"></tbody>
+            </table>
 
-        <div class="operationInfo" id="operationInformation">
+            <!-- <div class="operationInfo" id="operationInformation">
           This is Information
-        </div>
-        <div
-          class="ui sidebar vertical menu visible"
-          style="
-            margin-left: 10px !important;
-            height: 98% !important;
-            margin-top: 5px !important;
-            border-color: #002e94;
-            width: 15%;
-          "
-        >
-          <a class="item appName"> APP NAME </a>
+        </div> -->
 
-          <a
-            class="item"
-            style="
-              background-color: #2192ff !important;
-              color: white !important;
-            "
-          >
-            History Dashboard
-          </a>
-          <a class="item" href="./ControlMe.html"> Control Me </a>
-          <a class="item" href="./RemaindMe.html"> Remaind Me </a>
-        </div>
-
-        <table class="ui celled sortable table" id="siteHistroyDetails">
+            <!-- ui celled sortable table"  -->
+            <table class="ui celled sortable table" id="siteHistroyDetails"> 
           <thead id="historyDateTable"></thead>
           <tbody id="activesTableBody"></tbody>
-        </table>
+        </table> 
+          </div>
+        </div>
+        <div class="helperChartsContainer">
+          <div class="helperCharts">
+            <div class="weekChart">
+              <h3>By Week</h3>
+              <canvas
+                id="siteHisoryChartByWeek"
+                width="60% !important"
+                height="30% !important"
+              ></canvas>
+            </div>
+            <div class="hoursChart">
+              <h3>By Hours</h3>
+              <canvas
+                id="siteHisoryChartByHours"
+                width="60% !important"
+                height="30% !important"
+              ></canvas>
+            </div>
+          </div>
+          <div class="helperCharts2">
+            <div class="daysChart" style="margin-top: 15%">
+              <h3>By Days</h3>
+              <canvas
+                id="siteHisoryChartByDays"
+                width="60% !important"
+                height="30% !important"
+              ></canvas>
+            </div>
+          </div>
+        </div>
       </div>
-      <script src="./jquery.min.js"></script>
-      <script src="./moment.min.js"></script>
-      <script src="./semanticUI.min.js"></script>
-      <script src="./chartjs.js"></script>
-      <script src="./indexDBModel.js"></script>
-      <script src="./tablesort.js"></script>
-      <script src="./utils.js"></script>
-      <!-- <script src="./background.js"></script> -->
     </div>
+    <script src="./jquery.min.js"></script>
+    <script src="./moment.min.js"></script>
+    <script src="./semanticUI.min.js"></script>
+    <script src="./chartjs.js"></script>
+    <script src="./indexDBModel.js"></script>
+    <script src="./tablesort.js"></script>
+    <script src="./utils.js"></script>
+    <script src="./bootstrap.min.js"></script>
+    <!-- <script src="./background.js"></script> -->
   </body>
 </html>

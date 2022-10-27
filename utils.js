@@ -43,7 +43,7 @@ document.getElementById("addRecurringRemainder")
 
 let URLDetails = [];
 var domainDetails = {};
-var pieChart;
+var pieChart, weekChart, dayChart, hoursChart;
 
 $("#resetChart").click(function (event) {
   $(".chartFilterBtn").attr("style", "background-color:white");
@@ -102,7 +102,7 @@ function filterChartData(filterDetails, targetElement) {
 
   $("#" + targetElement).attr(
     "style",
-    "background-color: #e03997!important; color:white !important"
+    "background-color: #2192ff!important; color:white !important"
   );
 
   var todayDate = new Date();
@@ -206,7 +206,12 @@ function renderSiteHistroyOnTable(vistedData, label) {
   $("#tblheaderRow").html("");
   $("#activesTableBody").html("");
   $("#chartInfo").show();
-  $("#chartInfo").html(label + " - " + vistedData.length);
+  $("#chartInfo").html(
+    "<b>Site Domain: </b> " +
+      label +
+      "<b style='padding-left:10px'>Visited Counts: </b> " +
+      vistedData.length
+  );
 
   var tblheaderRow =
     '<tr id="row">  <th> Date  </th>  <th> Mins Spend </th> </tr>';
@@ -305,14 +310,191 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
       var label = chartData.labels[idx];
       var value = chartData.datasets[0].data[idx];
 
-      if (domainDetails[label] && domainDetails[label].visitedDetails)
+      if (domainDetails[label] && domainDetails[label].visitedDetails) {
         renderSiteHistroyOnTable(domainDetails[label].visitedDetails, label);
+        renderhelperCharts(domainDetails[label].visitedDetails);
+      }
     } else {
       $("#siteHistroyDetails").hide();
       $("#histroyDetails").show();
       $("#chartInfo").hide();
     }
   };
+}
+
+function renderhelperCharts(visitedDetails) {
+  // render By weeks
+  let dataByWeek = {
+      Sunday: 0,
+      Monday: 0,
+      Tuesday: 0,
+      Wednesday: 0,
+      Thursday: 0,
+      Friday: 0,
+      Saturday: 0,
+    },
+    dataByDate = generateDaySet(),
+    dataByHours = generateHoursSet();
+  const weekday = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  visitedDetails.forEach(function (data, index) {
+    if (data.lastVisited) {
+      let currentDay = weekday[data.lastVisited.getDay()],
+        currentHours = "0" + data.lastVisited.getHours() + ":00",
+        currentDate = data.lastVisited.getDate();
+
+      dataByDate[currentDate] += 1;
+      dataByHours[currentHours] += 1;
+      dataByWeek[currentDay] += 1;
+    }
+  });
+
+  if (weekChart != null && dayChart != null && hoursChart != null) {
+    weekChart.destroy();
+    dayChart.destroy();
+    hoursChart.destroy();
+  }
+
+  renderDaysChart(dataByDate);
+  renderHoursChart(dataByHours);
+  renderWeekChart(weekday, dataByWeek);
+}
+
+function renderDaysChart(dataByDate) {
+  var siteCanvasHoursChart = document.getElementById("siteHisoryChartByDays");
+  var ctx = siteCanvasHoursChart.getContext("2d");
+  var oilData = {
+    labels: Object.keys(dataByDate),
+    datasets: [
+      {
+        data: Object.values(dataByDate),
+
+        // backgroundColor: getColorForItems(7),
+        fill: false,
+        backgroundColor: '#3498db'
+      },
+    ],
+  };
+
+  hoursChart = new Chart(ctx, {
+    type: "line",
+    data: oilData,
+    options: {
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        mode: "index",
+      },
+    },
+  });
+}
+
+function renderHoursChart(dataByHours) {
+  var siteCanvasHoursChart = document.getElementById("siteHisoryChartByHours");
+  var ctx = siteCanvasHoursChart.getContext("2d");
+  var oilData = {
+    labels: Object.keys(dataByHours),
+    datasets: [
+      {
+        data: Object.values(dataByHours),
+
+        // backgroundColor: getColorForItems(7),
+        fill: false,
+     
+        backgroundColor: "pink",
+      },
+    ],
+  };
+
+  hoursChart = new Chart(ctx, {
+    type: "line",
+    data: oilData,
+    options: {
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        mode: "index",
+      },
+    },
+  });
+}
+
+function renderWeekChart(weekday, dataByWeek) {
+  var siteCanvasWeekChart = document.getElementById("siteHisoryChartByWeek");
+  var ctx = siteCanvasWeekChart.getContext("2d");
+  var oilData = {
+    labels: weekday,
+    datasets: [
+      {
+        data: [
+          dataByWeek.Sunday,
+          dataByWeek.Monday,
+          dataByWeek.Tuesday,
+          dataByWeek.Wednesday,
+          dataByWeek.Thursday,
+          dataByWeek.Friday,
+          dataByWeek.Saturday,
+        ],
+
+        backgroundColor: getColorForItems(7),
+        fill: false,
+      },
+    ],
+  };
+
+  weekChart = new Chart(ctx, {
+    type: "bar",
+    data: oilData,
+    options: {
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        mode: "index",
+      },
+    },
+  });
+}
+
+function generateDaySet() {
+  let targetObject = {};
+
+  for (let index = 0; index < 32; index++) {
+    targetObject[index] = 0;
+  }
+
+  return targetObject;
+}
+
+function generateHoursSet() {
+  let targetObject = {};
+
+  for (let index = 0; index < 25; index++) {
+    let time = "0" + index + ":00";
+    targetObject[time] = 0;
+  }
+
+  return targetObject;
+}
+
+function getColorForItems(count) {
+  let colors = [];
+
+  for (let index = 0; index < count; index++) {
+    colors.push(getRandomColor());
+  }
+
+  return colors;
 }
 
 function getRandomColor() {

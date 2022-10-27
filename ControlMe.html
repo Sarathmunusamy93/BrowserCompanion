@@ -19,6 +19,14 @@
     <!-- <script src=" https://unpkg.com/idb/build/iife/index-min.js"></script> -->
 
     <div class="controlMePageBody">
+      <div class="ui top fixed menu" id="navContainer">
+        <div class="item title">
+          <img src="./img/android.png" width="100%" /> Browser Companion
+        </div>
+        <a class="item"  href="./MainPage.html">History Dashboard</a>
+        <a class="item selected" href="./ControlMe.html"> Control Me </a>
+        <a class="item" href="./RemaindMe.html"> Remaind Me </a>
+      </div>
       <div
         class="ui container"
         style="
@@ -30,7 +38,7 @@
       >
         <!-- <div style="margin-top: 100px" class="ui container"> -->
         <div class="controlMeUserInput">
-          <div class="ui input" style="margin-top: 5%; margin-left: 5%">
+          <div class="ui input" style="margin-top: 5%; margin-left: 2%">
             <input
               type="text"
               id="controlSiteURL"
@@ -58,40 +66,6 @@
           </button>
           <button class="ui button gray" id="clearLS">clearLS</button> -->
         </div>
-        <div
-          class="ui sidebar vertical menu visible"
-          style="
-            margin-left: 10px !important;
-            height: 98% !important;
-            margin-top: 5px !important;
-            border-color: #002e94;
-            width: 15%;
-          "
-        >
-          <a class="item appName"> APP NAME </a>
-
-          <a class="item" href="./MainPage.html"> History Dashboard </a>
-          <a
-            class="item"
-            style="
-              background-color: #2192ff !important;
-              color: white !important;
-            "
-            href="./ControlMe.html"
-          >
-            Control Me
-          </a>
-          <a class="item" href="./RemaindMe.html"> Remaind Me </a>
-        </div>
-        <!-- <div class="ui sidebar vertical menu visible">
-          <h2 class="SideBarTitle">Track Me</h2>
-
-          <i id="toogleSideBar" class="chevron right icon"></i>
-
-          <a class="item" href="./MainPage.html"> Dashboard </a>
-          <a class="item"> Control Me </a>
-          <a class="item" href="./RemaindMe.html"> Remaind Me </a>
-        </div> -->
 
         <table class="ui celled table" id="controlsDetails">
           <thead>

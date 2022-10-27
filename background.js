@@ -25,18 +25,18 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       if (remainder.frequency == "Weekly") {
         options = {
           when,
-          periodInMinutes: 10080
-        }
+          periodInMinutes: 10080,
+        };
       } else if (remainder.isRecurring == "Daily") {
         options = {
           when,
-          periodInMinutes: 60
-        }
+          periodInMinutes: 60,
+        };
       }
     } else {
       options = {
-        when
-      }
+        when,
+      };
     }
     createAlarm(name, options);
   } else if (request.type == "createAlarmForControlRenewal") {
@@ -66,11 +66,9 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 //   }
 // );
 
-
 function createAlarm(name, options) {
   chrome.alarms.create(name, options);
 }
-
 
 function createAlaramForSiteRenew(controlSiteInstance) {
   var name = "CntrlRenew_" + controlSiteInstance.targetUrl,
@@ -89,10 +87,7 @@ chrome.runtime.onInstalled.addListener(async () => {
   console.log(`Created tab ${tab.id}`);
 });
 
-
-
 function handleHistoryDataSave(data, currentIndex, tabid) {
-
   let localData = data,
     Currentdata = localData[currentIndex],
     URLDetail = {
@@ -109,9 +104,7 @@ function handleHistoryDataSave(data, currentIndex, tabid) {
     URLDetail,
     false,
     function (result) {
-
       if (currentIndex < localData.length - 1) {
-
         console.log("Total: " + localData.length + "Current: " + currentIndex);
         handleHistoryDataSave(localData, currentIndex + 1, tabid);
       } else {
@@ -119,14 +112,15 @@ function handleHistoryDataSave(data, currentIndex, tabid) {
       }
     }
   );
-};
-
-
+}
 
 function fetchBrowserHistoryCE(tabsID) {
-  chrome.history.search({ text: "", startTime: 0, maxResults: 10000 }, function (data) {
-    handleHistoryDataSave(data, 0, tabsID);
-  });
+  chrome.history.search(
+    { text: "", startTime: 0, maxResults: 10000 },
+    function (data) {
+      handleHistoryDataSave(data, 0, tabsID);
+    }
+  );
 }
 
 chrome.alarms.onAlarm.addListener((alarm) => {
@@ -157,12 +151,10 @@ chrome.alarms.onAlarm.addListener((alarm) => {
         openURLPrompts[id] = { targetURL };
 
         getRemainderForAlarm(remainder_id, function (remainder_obj) {
-
           if (!remainder_obj.isRecurring) {
             del("RemaindME", "RemaindMEDB", remainder_id);
           } else {
             if (remainder_obj.frequency == "Monthly") {
-
               let name = "remainder_" + remainder_id,
                 remainderDate = remainder.dateTime,
                 targetMonth = new Date().getMonth() + 1,
@@ -176,7 +168,6 @@ chrome.alarms.onAlarm.addListener((alarm) => {
               nextReminderDate.setDate(targetDate);
               nextReminderDate.setHours(targetHour);
               nextReminderDate.setMinutes(targetMinutes);
-
 
               createAlarm(name, { when: nextReminderDate });
             }
@@ -249,7 +240,7 @@ function isTabUpdated(tabId, newURL, newTabInfo) {
           diff_mins(new Date().getTime(), tabDetails.startTime);
 
         saveTabInfo(tabDetails);
-        chrome.storage.sync.remove(tabId.toString(), function () { });
+        chrome.storage.sync.remove(tabId.toString(), function () {});
         saveNewTabInfoInLocalStorage(newTabInfo);
         return true;
       } else return false;
@@ -278,17 +269,19 @@ function changeCurrentlyActiveTab(activeTabID, switchedTab) {
 
       chrome.storage.sync.set(
         { [key]: JSON.stringify(tabDetails) },
-        function () { }
+        function () {}
       );
       activeTabID = switchedTab;
-    } else if (tabInfo.url != "chrome://newtab/") {
+    } else {
       // Its new tab !!! save the instance to local storage.
 
       chrome.tabs.get(tabId, function (tabInfo) {
-        checkIsRestrictedSite(url, function (isrestricted) {
-          tabInfo.isrestrictedSite = isrestricted;
-          saveNewTabInfoInLocalStorage(tabInfo);
-        });
+        if (tabInfo.url != "chrome://newtab/") {
+          checkIsRestrictedSite(url, function (isrestricted) {
+            tabInfo.isrestrictedSite = isrestricted;
+            saveNewTabInfoInLocalStorage(tabInfo);
+          });
+        }
       });
     }
   });
@@ -314,6 +307,7 @@ function checkIsRestrictedSite(url, callback) {
           return callback(true);
         }
       });
+      return callback(false);
     } else {
       return callback(false);
     }
@@ -338,7 +332,7 @@ function setCntrlSiteWatchDog(restrictedSite) {
     message: "You have crossed your limit on this site!!!",
   };
 
-  chrome.notifications.create(notificationOptions, function (id) { });
+  chrome.notifications.create(notificationOptions, function (id) {});
 }
 
 function saveNewTabInfoInLocalStorage(tabInfo) {
@@ -374,7 +368,7 @@ chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
       updateSiteRestrictedTime(tabDetails.domain, tabDetails.activeTime);
     }
     saveTabInfo(tabDetails);
-    chrome.storage.sync.remove(tabId.toString(), function () { });
+    chrome.storage.sync.remove(tabId.toString(), function () {});
   });
 });
 
@@ -434,7 +428,7 @@ function setCurrentTabAsActive(tabId) {
 
       chrome.storage.sync.set(
         { [key]: JSON.stringify(tabDetails) },
-        function () { }
+        function () {}
       );
       activeTabID = key;
     } else {
