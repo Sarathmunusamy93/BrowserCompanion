@@ -1,29 +1,29 @@
 document.getElementById("historyImport")
   ? document
-      .getElementById("historyImport")
-      .addEventListener("click", fetchBrowserHistory)
+    .getElementById("historyImport")
+    .addEventListener("click", fetchBrowserHistory)
   : null;
 document.getElementById("startNow")
   ? document
-      .getElementById("startNow")
-      .addEventListener("click", redirectToDashboardPage)
+    .getElementById("startNow")
+    .addEventListener("click", redirectToDashboardPage)
   : null;
 document.getElementById("toogleSideBar")
   ? document
-      .getElementById("toogleSideBar")
-      .addEventListener("click", toogleSideBar)
+    .getElementById("toogleSideBar")
+    .addEventListener("click", toogleSideBar)
   : null;
 document.getElementById("filterStartDate")
   ? document
-      .getElementById("filterStartDate")
-      .addEventListener("change", enableEndDate)
+    .getElementById("filterStartDate")
+    .addEventListener("change", enableEndDate)
   : null;
 //window.addEventListener("beforeunload", closedWindow);
 
 document.getElementById("filterEndDate")
   ? document
-      .getElementById("filterEndDate")
-      .addEventListener("change", advancedFiltering)
+    .getElementById("filterEndDate")
+    .addEventListener("change", advancedFiltering)
   : null;
 
 //document.getElementsByClassName('chartFilterBtn') ? document.getElementsByClassName('chartFilterBtn').addEventListener("click", filterChartData) : null;
@@ -31,14 +31,14 @@ document.addEventListener("DOMContentLoaded", fetchRemainder);
 
 document.getElementById("addRemainder")
   ? document
-      .getElementById("addRemainder")
-      .addEventListener("click", saveRemaindar)
+    .getElementById("addRemainder")
+    .addEventListener("click", saveRemaindar)
   : null;
 
 document.getElementById("addRecurringRemainder")
   ? document
-      .getElementById("addRecurringRemainder")
-      .addEventListener("click", saveRemaindar)
+    .getElementById("addRecurringRemainder")
+    .addEventListener("click", saveRemaindar)
   : null;
 
 let URLDetails = [];
@@ -138,6 +138,8 @@ function renderChartBasedOnInputs(inputData, filter) {
   inputData.forEach(function (result, index) {
     var isfiltered = true;
 
+    result.lastVisitedTime = new Date(result.lastVisited).getHours();
+
     result.lastVisited = convertDate2Momentjs(result.lastVisited);
 
     if (filter && result.lastVisited && filter.startDate) {
@@ -168,6 +170,7 @@ function renderChartBasedOnInputs(inputData, filter) {
 
       domainDetails[result.domain].visitedDetails.push({
         lastVisited: result.lastVisited,
+        lastVisitedTime: result.lastVisitedTime,
         totalActiveHours: result.activeTime,
       });
     }
@@ -201,6 +204,7 @@ function renderChartOnConstrains(domainDetails, itemColor) {
 
 function renderSiteHistroyOnTable(vistedData, label) {
   $("#histroyDetails").hide();
+  $(".historyChartsContainer").hide();
   $("#siteHistroyDetails").show();
 
   $("#tblheaderRow").html("");
@@ -208,9 +212,9 @@ function renderSiteHistroyOnTable(vistedData, label) {
   $("#chartInfo").show();
   $("#chartInfo").html(
     "<b>Site Domain: </b> " +
-      label +
-      "<b style='padding-left:10px'>Visited Counts: </b> " +
-      vistedData.length
+    label +
+    "<b style='padding-left:10px'>Visited Counts: </b> " +
+    vistedData.length
   );
 
   var tblheaderRow =
@@ -248,12 +252,33 @@ function renderHistroyOnTable(siteDomains, visitCount) {
   $("#siteHistroyDetails").hide();
   $("#histroyDetails").show();
   $(" #historyTableBody").html("");
+  $(" #sitesRankList").html("");
   $("#historyTableHeaders").html("");
 
   var tblheaderRow =
     '<tr id="row">  <th> Site Domain  </th>  <th> Number of visited </th> </tr>';
 
   $(" #historyTableHeaders ").append(tblheaderRow);
+
+  let largestIndex = visitCount.map((value, index) => ({ value, index }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 10)
+    .map(obj => obj.index);
+
+  largestIndex.forEach(function (largestIndex, index) {
+
+    index = index + 1;
+
+    var tbleBodyRow =
+      '<tr id="row' +
+      index +
+      '">  <td data-label="domain">  ' +
+      index +
+      '  </td>  <td data-label="count"> ' +
+      siteDomains[largestIndex] +
+      " </td> ";
+    $(" #sitesRankList").append(tbleBodyRow);
+  });
 
   siteDomains.forEach(function (siteDomain, index) {
     var tbleBodyRow =
@@ -289,7 +314,7 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
   };
 
   pieChart = new Chart(ctx, {
-    type: "pie",
+    type: "doughnut",
     data: oilData,
     options: {
       legend: {
@@ -318,6 +343,7 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
       $("#siteHistroyDetails").hide();
       $("#histroyDetails").show();
       $("#chartInfo").hide();
+      $(".historyChartsContainer").show();
       $(".helperChartsContainer").hide();
     }
   };
@@ -326,14 +352,14 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
 function renderhelperCharts(visitedDetails) {
   // render By weeks
   let dataByWeek = {
-      Sunday: 0,
-      Monday: 0,
-      Tuesday: 0,
-      Wednesday: 0,
-      Thursday: 0,
-      Friday: 0,
-      Saturday: 0,
-    },
+    Sunday: 0,
+    Monday: 0,
+    Tuesday: 0,
+    Wednesday: 0,
+    Thursday: 0,
+    Friday: 0,
+    Saturday: 0,
+  },
     dataByDate = generateDaySet(),
     dataByHours = generateHoursSet();
   const weekday = [
@@ -350,7 +376,7 @@ function renderhelperCharts(visitedDetails) {
   visitedDetails.forEach(function (data, index) {
     if (data.lastVisited) {
       let currentDay = weekday[data.lastVisited.getDay()],
-        currentHours = "0" + data.lastVisited.getHours() + ":00",
+        currentHours = "0" + data.lastVisitedTime + ":00",
         currentDate = data.lastVisited.getDate();
 
       dataByDate[currentDate] += 1;
@@ -454,7 +480,7 @@ function renderWeekChart(weekday, dataByWeek) {
   };
 
   weekChart = new Chart(ctx, {
-    type: "bar",
+    type: "line",
     data: oilData,
     options: {
       legend: {
