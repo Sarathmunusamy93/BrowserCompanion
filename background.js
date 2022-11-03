@@ -55,17 +55,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   }
 });
 
-// chrome.runtime.onMessage.addListener(
-//   function(request, sender, sendResponse) {
-//       //Alert the message
-
-//       //Construct & send a response
-//       sendResponse({
-//           response: "Message received"
-//       });
-//   }
-// );
-
 function createAlarm(name, options) {
   chrome.alarms.create(name, options);
 }

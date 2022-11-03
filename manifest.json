@@ -11,19 +11,14 @@
     "history",
     "alarms",
     "notifications",
-    "storage"
+    "storage",
+    "webRequest"
   ],
   "action": {},
   "content_scripts": [
     {
-      "matches": [
-        "http://*/*",
-        "https://*/*"
-      ],
-      "js": [
-        "jquery.min.js",
-        "utils.js"
-      ]
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["jquery.min.js", "utils.js"]
     }
   ]
 }

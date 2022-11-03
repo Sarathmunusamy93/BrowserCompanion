@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>TrackME</title>
+    <title>Browser Companion</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"
@@ -58,36 +58,25 @@
               height="30% !important"
             ></canvas>
           </div>
+
           <div class="tabularDetails">
-            <div id="chartInfo"></div>
-            <table class="ui celled sortable table" id="histroyDetails">
-              <thead id="historyTableHeaders"></thead>
-              <tbody id="historyTableBody"></tbody>
-            </table>
-
-            <!-- <div class="operationInfo" id="operationInformation">
-          This is Information
-        </div> -->
-
-            <!-- ui celled sortable table"  -->
-            <table class="ui celled sortable table" id="siteHistroyDetails">
-              <thead id="historyDateTable"></thead>
-              <tbody id="activesTableBody"></tbody>
-            </table>
+            Total visited Sites list
+          </div>
+          <!-- <table class="ui celled sortable table" id="siteHistroyDetails">
+            <thead id="historyDateTable"></thead>
+            <tbody id="activesTableBody"></tbody>
+          </table> -->
+          <div class="timeSpendChart">
+            <div class="timeSpendChartInfo"></div>
+            <canvas
+              id="timeSpendChartCanvas"
+              width="60% !important"
+              height="30% !important"
+              style="margin-top: 8%"
+            ></canvas>
           </div>
         </div>
-        <div class="historyChartsContainer">
-          <table class="ui celled sortable table">
-            <thead id="">
-              <tr>
-                <th>Rank</th>
-                
-                <th>Site</th>
-              </tr>
-            </thead>
-            <tbody id="sitesRankList"></tbody>
-          </table>
-        </div>
+
         <div class="helperChartsContainer" style="display: none">
           <div class="helperCharts">
             <div class="weekChart">
@@ -126,6 +115,8 @@
     <script src="./chartjs.js"></script>
     <script src="./indexDBModel.js"></script>
     <script src="./tablesort.js"></script>
+    <script src="./chartjs-plugin-datalabels.js"></script>
+
     <script src="./utils.js"></script>
     <script src="./bootstrap.min.js"></script>
     <!-- <script src="./background.js"></script> -->

@@ -1,29 +1,29 @@
 document.getElementById("historyImport")
   ? document
-    .getElementById("historyImport")
-    .addEventListener("click", fetchBrowserHistory)
+      .getElementById("historyImport")
+      .addEventListener("click", fetchBrowserHistory)
   : null;
 document.getElementById("startNow")
   ? document
-    .getElementById("startNow")
-    .addEventListener("click", redirectToDashboardPage)
+      .getElementById("startNow")
+      .addEventListener("click", redirectToDashboardPage)
   : null;
 document.getElementById("toogleSideBar")
   ? document
-    .getElementById("toogleSideBar")
-    .addEventListener("click", toogleSideBar)
+      .getElementById("toogleSideBar")
+      .addEventListener("click", toogleSideBar)
   : null;
 document.getElementById("filterStartDate")
   ? document
-    .getElementById("filterStartDate")
-    .addEventListener("change", enableEndDate)
+      .getElementById("filterStartDate")
+      .addEventListener("change", enableEndDate)
   : null;
 //window.addEventListener("beforeunload", closedWindow);
 
 document.getElementById("filterEndDate")
   ? document
-    .getElementById("filterEndDate")
-    .addEventListener("change", advancedFiltering)
+      .getElementById("filterEndDate")
+      .addEventListener("change", advancedFiltering)
   : null;
 
 //document.getElementsByClassName('chartFilterBtn') ? document.getElementsByClassName('chartFilterBtn').addEventListener("click", filterChartData) : null;
@@ -31,19 +31,19 @@ document.addEventListener("DOMContentLoaded", fetchRemainder);
 
 document.getElementById("addRemainder")
   ? document
-    .getElementById("addRemainder")
-    .addEventListener("click", saveRemaindar)
+      .getElementById("addRemainder")
+      .addEventListener("click", saveRemaindar)
   : null;
 
 document.getElementById("addRecurringRemainder")
   ? document
-    .getElementById("addRecurringRemainder")
-    .addEventListener("click", saveRemaindar)
+      .getElementById("addRecurringRemainder")
+      .addEventListener("click", saveRemaindar)
   : null;
 
 let URLDetails = [];
 var domainDetails = {};
-var pieChart, weekChart, dayChart, hoursChart;
+var pieChart, weekChart, dayChart, hoursChart, timeSpendChart;
 
 $("#resetChart").click(function (event) {
   $(".chartFilterBtn").attr("style", "background-color:white");
@@ -139,7 +139,6 @@ function renderChartBasedOnInputs(inputData, filter) {
     var isfiltered = true;
 
     result.lastVisitedTime = new Date(result.lastVisited).getHours();
-
     result.lastVisited = convertDate2Momentjs(result.lastVisited);
 
     if (filter && result.lastVisited && filter.startDate) {
@@ -162,7 +161,7 @@ function renderChartBasedOnInputs(inputData, filter) {
           visitedCount: 1,
           visitedDetails: [],
         };
-        itemColor.push(getRandomColor());
+        itemColor.push(getRandomColor(itemColor));
       } else {
         domainDetails[result.domain].visitedCount =
           domainDetails[result.domain].visitedCount + 1;
@@ -193,7 +192,7 @@ function renderChartOnConstrains(domainDetails, itemColor) {
     visitedCount.push(domainDetails[key].visitedCount);
   });
 
-  renderHistroyOnTable(urlDomain, visitedCount);
+  renderHistroyOnTable(urlDomain, visitedCount, itemColor);
 
   if (pieChart != null) {
     pieChart.destroy();
@@ -204,100 +203,173 @@ function renderChartOnConstrains(domainDetails, itemColor) {
 
 function renderSiteHistroyOnTable(vistedData, label) {
   $("#histroyDetails").hide();
-  $(".historyChartsContainer").hide();
-  $("#siteHistroyDetails").show();
-
+  $("#timeSpendChart").show();
   $("#tblheaderRow").html("");
+  $(".tabularDetails").hide();
   $("#activesTableBody").html("");
   $("#chartInfo").show();
   $("#chartInfo").html(
     "<b>Site Domain: </b> " +
-    label +
-    "<b style='padding-left:10px'>Visited Counts: </b> " +
-    vistedData.length
+      label +
+      "<b style='padding-left:10px'>Visited Counts: </b> " +
+      vistedData.length
   );
 
-  var tblheaderRow =
-    '<tr id="row">  <th> Date  </th>  <th> Mins Spend </th> </tr>';
-  $("#siteHistroyDetails").append(tblheaderRow);
+  // var tblheaderRow =
+  //   '<tr id="row">  <th> Date  </th>  <th> Mins Spend </th> </tr>';
+  // $("#siteHistroyDetails").append(tblheaderRow);
 
-  let totalVisitedHours = 0;
+  let totalVisitedHours = 0,
+    timeSpendByDate = {};
 
   vistedData.forEach(function (data, index) {
     totalVisitedHours += data.totalActiveHours;
 
-    var tbleBodyRow =
-      '<tr id="row' +
-      index +
-      '">  <td data-label="domain">  ' +
-      new Date(data.lastVisited).toLocaleDateString() +
-      '  </td>  <td data-label="count"> ' +
-      data.totalActiveHours +
-      " </td> ";
+    let currentDate = new Date(data.lastVisited).toLocaleDateString();
 
-    $(" #activesTableBody").append(tbleBodyRow);
-    if (vistedData.length - 1 == index) {
-      var tbleBodyLastRow =
-        '<tr id="row' +
-        index +
-        '">  <td data-label="domain"> <b> Total  </b>  </td>  <td data-label="count"> <b>' +
-        totalVisitedHours +
-        "</b> </td> ";
-      $(" #activesTableBody").append(tbleBodyLastRow);
+    if (timeSpendByDate[currentDate]) {
+      timeSpendByDate[currentDate] +=
+        data.totalActiveHours == null ? 0 : data.totalActiveHours;
+    } else {
+      timeSpendByDate[currentDate] =
+        data.totalActiveHours == null ? 0 : data.totalActiveHours;
     }
+
+    //   var tbleBodyRow =
+    //     '<tr id="row' +
+    //     index +
+    //     '">  <td data-label="domain">  ' +
+    //     new Date(data.lastVisited).toLocaleDateString() +
+    //     '  </td>  <td data-label="count"> ' +
+    //     data.totalActiveHours +
+    //     " </td> ";
+
+    //   $(" #activesTableBody").append(tbleBodyRow);
+    //   if (vistedData.length - 1 == index) {
+    //     var tbleBodyLastRow =
+    //       '<tr id="row' +
+    //       index +
+    //       '">  <td data-label="domain"> <b> Total  </b>  </td>  <td data-label="count"> <b>' +
+    //       totalVisitedHours +
+    //       "</b> </td> ";
+    //     $(" #activesTableBody").append(tbleBodyLastRow);
+    //   }
+  });
+
+  showTimeSpendChart(timeSpendByDate, totalVisitedHours);
+}
+
+function showTimeSpendChart(data, totalHours) {
+  $(".timeSpendChartInfo").html("Total Time Spend (mins): " + totalHours);
+
+  let labelsData = Object.keys(data),
+    values = Object.values(data);
+  $(".timeSpendChart").show();
+  var timeSpendCanvas = document.getElementById("timeSpendChartCanvas");
+  var ctx = timeSpendCanvas.getContext("2d");
+  var oilData = {
+    labels: labelsData,
+    datasets: [
+      {
+        data: values,
+        backgroundColor: "#3498db",
+      },
+    ],
+  };
+
+  timeSpendChart = new Chart(ctx, {
+    type: "line",
+    data: oilData,
+    options: {
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        mode: "index",
+      },
+    },
   });
 }
 
-function renderHistroyOnTable(siteDomains, visitCount) {
-  $("#siteHistroyDetails").hide();
+function renderHistroyOnTable(siteDomains, visitCount, colors) {
+  $("#timeSpendChart").hide();
   $("#histroyDetails").show();
-  $(" #historyTableBody").html("");
-  $(" #sitesRankList").html("");
+  // $(".tabularDetails").hide();
   $("#historyTableHeaders").html("");
-
+  $(".tabularDetails").html("");
+  // $(".tabularDetails").css("with", "");
   var tblheaderRow =
     '<tr id="row">  <th> Site Domain  </th>  <th> Number of visited </th> </tr>';
 
   $(" #historyTableHeaders ").append(tblheaderRow);
 
-  let largestIndex = visitCount.map((value, index) => ({ value, index }))
-    .sort((a, b) => b.value - a.value)
-    .slice(0, 10)
-    .map(obj => obj.index);
+  // the array to be sorted
+  var list = visitCount;
 
-  largestIndex.forEach(function (largestIndex, index) {
-
-    index = index + 1;
-
-    var tbleBodyRow =
-      '<tr id="row' +
-      index +
-      '">  <td data-label="domain">  ' +
-      index +
-      '  </td>  <td data-label="count"> ' +
-      siteDomains[largestIndex] +
-      " </td> ";
-    $(" #sitesRankList").append(tbleBodyRow);
+  // temporary array holds objects with position and sort-value
+  var mapped = list.map(function (el, i) {
+    return { index: i, value: el };
   });
 
-  siteDomains.forEach(function (siteDomain, index) {
-    var tbleBodyRow =
-      '<tr id="row' +
-      index +
-      '">  <td data-label="domain">  ' +
-      siteDomain +
-      '  </td>  <td data-label="count"> ' +
-      visitCount[index] +
-      " </td> ";
-    $(" #historyTableBody").append(tbleBodyRow);
+  // sorting the mapped array containing the reduced values
+  mapped.sort(function (a, b) {
+    return b.value - a.value;
+  });
+
+  // container for the resulting order
+  var result = mapped.map(function (el) {
+    return list[el.index];
+  });
+
+  mapped.forEach(function (siteVisited, index) {
+    let siteDomain = siteDomains[siteVisited.index],
+      visitedCount = visitCount[siteVisited.index];
+
+    if (isValidHttpUrl(siteDomain)) {
+      let currentDomain = new URL(siteDomain).host,
+        rank = index <= 10 ? "rank" : "";
+
+      let siteDetails =
+        '<div class="siteMiniContainer">  <span class="siteColor" style="background-color:' +
+        colors[siteVisited.index] +
+        '"> </span> <span class="siteDetailsName"> ' +
+        currentDomain +
+        " </span> -  <span>" +
+        visitedCount +
+        " </span> </div>";
+
+      // var tbleBodyRow =
+      //   '<tr id="row' +
+      //   index +
+      //   '">  <td data-label="domain">  ' +
+      //   siteDomain +
+      //   '  </td>  <td data-label="count"> ' +
+      //   visitCount[index] +
+      //   " </td> ";
+      $(" .tabularDetails").append(siteDetails);
+    }
   });
 
   $(".sortable.table").tablesort();
 }
 
+function isValidHttpUrl(string) {
+  let url;
+  try {
+    url = new URL(string);
+  } catch (_) {
+    return false;
+  }
+  return url.protocol === "http:" || url.protocol === "https:";
+}
+
 function toogleSideBar() {
   console.log("loadded");
   $(".ui.sidebar").sidebar("toggle");
+}
+
+function getSiteTotals(sizeCount) {
+  return "Total Site:" + sizeCount;
 }
 
 function renderChartItems(urlDomain, visitedCount, itemColor) {
@@ -313,10 +385,46 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
     ],
   };
 
+  // Chart.pluginService.register({
+  //   beforeDraw: function (chart) {
+  //     if (chart.config.type == "doughnut") {
+  //       var width = chart.chart.width,
+  //         height = chart.chart.height,
+  //         ctx = chart.chart.ctx;
+
+  //       var fontSize = (height / 224).toFixed(2);
+  //       ctx.font = fontSize + "em sans-serif";
+  //       ctx.textBaseline = "middle";
+
+  //       var text = getSiteTotals(urlDomain.length),
+  //         textX = Math.round((width - ctx.measureText(text).width) / 2),
+  //         textY = height / 2;
+
+  //       ctx.fillText(text, textX, textY);
+  //       ctx.save();
+  //     }
+  //   },
+  // });
+
   pieChart = new Chart(ctx, {
     type: "doughnut",
     data: oilData,
+
     options: {
+      plugins: {
+        datalabels: {
+          backgroundColor: function (context) {
+            return context.dataset.backgroundColor;
+          },
+          borderRadius: 4,
+          color: "white",
+          font: {
+            weight: "bold",
+          },
+          formatter: Math.round,
+          padding: 6,
+        },
+      },
       legend: {
         display: false,
       },
@@ -326,24 +434,48 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
     },
   });
 
+  // setTimeout(function () {
+  //   var width = pieChart.chart.width,
+  //     height = pieChart.chart.height,
+  //     ctx = pieChart.chart.ctx;
+  //   var fontSize = (height / 224).toFixed(2);
+  //   ctx.font = fontSize + "em sans-serif";
+  //   ctx.textBaseline = "middle";
+
+  //   var text = getSiteTotals(urlDomain.length),
+  //     textX = Math.round((width - ctx.measureText(text).width) / 2),
+  //     textY = height / 2;
+
+  //   ctx.fillText(text, textX, textY);
+  //   ctx.save();
+  // }, 1000);
+
   siteCanvas.onclick = function (evt) {
+    pieChart.update();
     var activePoints = pieChart.getElementsAtEvent(evt);
     if (activePoints[0]) {
       var chartData = activePoints[0]["_chart"].config.data;
       var idx = activePoints[0]["_index"];
 
+      activePoints[0]["_model"].innerRadius =
+        activePoints[0]["_model"].innerRadius + 10;
+      activePoints[0]["_model"].outerRadius =
+        activePoints[0]["_model"].outerRadius + 10;
+
       var label = chartData.labels[idx];
       var value = chartData.datasets[0].data[idx];
+
+      pieChart.render(300, false);
 
       if (domainDetails[label] && domainDetails[label].visitedDetails) {
         renderSiteHistroyOnTable(domainDetails[label].visitedDetails, label);
         renderhelperCharts(domainDetails[label].visitedDetails);
       }
     } else {
-      $("#siteHistroyDetails").hide();
+      $("#timeSpendChart").hide();
       $("#histroyDetails").show();
       $("#chartInfo").hide();
-      $(".historyChartsContainer").show();
+      $(".tabularDetails").css("display", "grid");
       $(".helperChartsContainer").hide();
     }
   };
@@ -352,14 +484,14 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
 function renderhelperCharts(visitedDetails) {
   // render By weeks
   let dataByWeek = {
-    Sunday: 0,
-    Monday: 0,
-    Tuesday: 0,
-    Wednesday: 0,
-    Thursday: 0,
-    Friday: 0,
-    Saturday: 0,
-  },
+      Sunday: 0,
+      Monday: 0,
+      Tuesday: 0,
+      Wednesday: 0,
+      Thursday: 0,
+      Friday: 0,
+      Saturday: 0,
+    },
     dataByDate = generateDaySet(),
     dataByHours = generateHoursSet();
   const weekday = [
@@ -480,7 +612,7 @@ function renderWeekChart(weekday, dataByWeek) {
   };
 
   weekChart = new Chart(ctx, {
-    type: "line",
+    type: "bar",
     data: oilData,
     options: {
       legend: {
@@ -518,18 +650,28 @@ function getColorForItems(count) {
   let colors = [];
 
   for (let index = 0; index < count; index++) {
-    colors.push(getRandomColor());
+    colors.push(getRandomColor(colors));
   }
-
+  console.log(colors);
   return colors;
 }
 
-function getRandomColor() {
+function getRandomColor(currentColors) {
   var letters = "0123456789ABCDEF".split("");
   var color = "#";
   for (var i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
+
+  if (currentColors) {
+    if (currentColors.indexOf(color) != -1) {
+      console.log("It is duplicate color: " + color);
+      getRandomColor(currentColors);
+    } else {
+      return color;
+    }
+  }
+
   return color;
 }
 
@@ -558,6 +700,10 @@ $(document).ready(function () {
       console.log(val);
     },
   });
+
+  $(".timeSpendChart").hide();
+
+  $(".tabularDetails").css("display", "grid");
 
   $("#dateValue").calendar({ type: "date" });
 
