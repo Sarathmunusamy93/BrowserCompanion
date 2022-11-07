@@ -7,18 +7,20 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css"
     />
     <link rel="stylesheet" href="./main.css" />
+    <link rel="icon" href="./Logo/LogoIcon.png" type="image/icon type">
     <!-- <link rel="stylesheet" href="./bootstrap.min.css" /> -->
   </head>
 
   <body>
     <div class="startPageBody">
       <div class="ui top fixed menu" id="navContainer">
-        <div class="item title">
-          <img src="./img/android.png" width="100%" /> Browser Companion
+        <div class="item title" style="font-size: x-large">
+          <img src="./Logo/LogoIcon.png" width="100%" href="./MainPage.html" />
+          Browser Companion
         </div>
-        <a class="item selected">History Dashboard</a>
-        <a class="item" href="./ControlMe.html"> Control Me </a>
-        <a class="item" href="./RemaindMe.html"> Remaind Me </a>
+        <a class="item page selected">History Dashboard</a>
+        <a class="item page" href="./ControlMe.html"> Control Me </a>
+        <a class="item page" href="./RemaindMe.html"> Remaind Me </a>
       </div>
       <div class="dashboardBody">
         <div class="dashboardContainer">
@@ -50,18 +52,44 @@
             Clear all Data
           </button>
         </div>
+        <div class="homePageChartInfos">
+          <div class="doughnetChartInfo">
+            <i class="info medium blue circle icon"></i> This is Chart
+          </div>
+          <div class="MainTableInfo">
+            <i class="info medium blue circle icon"></i> This is table
+          </div>
+        </div>
         <div class="siteRepresentation">
           <div class="chartArea">
+            <div
+              id="mainListBackButton"
+              style="display: none; font-size: 17px; cursor: pointer"
+            >
+              <i class="angle big blue left icon" style="margin-left: 140px"></i
+              >Back to Main List
+            </div>
             <canvas
               id="siteHisoryChart"
               width="60% !important"
               height="30% !important"
             ></canvas>
+
+            <div
+              id="chartClickInfo"
+              style="
+                font-size: 17px;
+                cursor: pointer;
+                margin-left: 35%;
+                margin-top: 50px;
+              "
+            >
+              <i class="info medium blue circle icon"></i> Select chart
+              selection to view details.
+            </div>
           </div>
 
-          <div class="tabularDetails">
-            Total visited Sites list
-          </div>
+          <div class="tabularDetails">Total visited Sites list</div>
           <!-- <table class="ui celled sortable table" id="siteHistroyDetails">
             <thead id="historyDateTable"></thead>
             <tbody id="activesTableBody"></tbody>
@@ -119,6 +147,8 @@
 
     <script src="./utils.js"></script>
     <script src="./bootstrap.min.js"></script>
+    <script src="./jquery.scrollTo.min.js"></script>
+
     <!-- <script src="./background.js"></script> -->
   </body>
 </html>

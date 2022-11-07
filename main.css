@@ -54,15 +54,16 @@
 .appName {
   height: 15% !important;
 }
-.item {
-  height: 28%;
+.item1.page1 {
+
+  /* height: 28%; */
   font-size: larger;
   align-items: center;
   align-content: center;
-  display: flex !important;
+  /* display: flex !important; */
   justify-content: center !important;
   align-items: center !important;
-  border-color: #002e94;
+  /* border-color: #002e94; */ 
   color: #2192ff !important;
 }
 
@@ -82,9 +83,16 @@
   gap: 15px;
 }
 
+.remindeMeBodyctrl,
+#remaindMeDetails {
+  height: 20%;
+  margin-top: 100px !important;
+  width: 80% !important;
+  margin-left: 10% !important;
+}
+
 .dashboardBody,
-.controlMeUserInput,
-.remindeMeBodyctrl {
+.controlMeUserInput {
   background-color: white !important;
   display: flex;
   flex-direction: column;
@@ -103,7 +111,7 @@
 .timeSpendChart {
   display: block;
   /* overflow: scroll; */
-  width: 55%;
+  width: 60%;
   height: 500px;
 }
 
@@ -136,8 +144,7 @@
   color: white !important;
 }
 
-#controlsDetails,
-#remaindMeDetails {
+#controlsDetails {
   /* margin-left: 17%; */
   /* margin-right: 2%; */
   margin-top: 5px !important;
@@ -205,6 +212,7 @@
 
 .addNewRecurringRemainder {
   margin: 15px 5%;
+  height: 3em;
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -228,7 +236,20 @@
   border: 1px solid black;
   clear: both;
 }
+.homePageChartInfos {
+  display: flex;
+  flex-direction: row;
+}
 
+.doughnetChartInfo {
+  margin-left: 20%;
+  font-size: 17px;
+}
+
+.MainTableInfo {
+  margin-left: 40%;
+  font-size: 17px;
+}
 .tabularDetails {
   overflow: scroll;
   display: grid;
@@ -244,6 +265,14 @@
   /* width: 40%; */
 }
 
+.highlighedSite {
+  height: 40px !important;
+  border: black;
+  border: 1px;
+  border-style: groove;
+  border-color: #2192ff;
+}
+
 .siteRepresentation {
   display: flex;
   margin-top: 15px;
@@ -257,9 +286,9 @@
   /* margin: 40px 200px;
   width: 70% !important; */
   margin-right: -15% !important;
-  margin-left: -1% !important;
+  margin-left: -9% !important;
 
-  width: 60% !important;
+  width: 70% !important;
 
   height: 500px;
   /* text-align: right;

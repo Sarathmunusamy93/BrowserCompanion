@@ -448,7 +448,9 @@ chrome.tabs.onActivated.addListener(function (activeInfo) {
     changeCurrentlyActiveTab(activeTabID, switchedTab);
   }
 
-  setCurrentTabAsActive(switchedTab);
+  setTimeout(() => {
+    setCurrentTabAsActive(switchedTab);
+  }, 100);
 });
 
 // chrome.storage.sync.clear(() => {
