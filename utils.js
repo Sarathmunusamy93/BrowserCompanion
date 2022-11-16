@@ -52,7 +52,11 @@ $("#resetChart").click(function (event) {
 });
 
 $("#todayFilter").click(function (event) {
-  filterChartData("day", event.currentTarget.id);
+  chrome.runtime.sendMessage({
+    type: "test",
+    options: {},
+  });
+  //filterChartData("day", event.currentTarget.id);
 });
 
 $("#weekFilter").click(function (event) {
@@ -102,7 +106,7 @@ function filterChartData(filterDetails, targetElement) {
 
   $("#" + targetElement).attr(
     "style",
-    "background-color: #2192ff!important; color:white !important"
+    "background-color: #7ec8e3ff!important; color:white !important"
   );
 
   var todayDate = new Date();
@@ -150,7 +154,7 @@ function renderChartBasedOnInputs(inputData, filter) {
         isfiltered = true;
     } else if (filter && result.lastVisited && filter > result.lastVisited) isfiltered = false;
 
-    if (isfiltered) {
+    if (isfiltered && result.domain != null) {
       // Check if domain instance is first time in domainDetails array.
       if (
         domainDetails[result.domain] == null ||
@@ -203,9 +207,14 @@ function renderChartOnConstrains(domainDetails, itemColor) {
 
 function renderSiteHistroyOnTable(vistedData, label) {
   $("#mainListBackButton").show();
+  $(".MainTableInfo").hide();
   $("#histroyDetails").hide();
+
+  $(".doughnetChartInfo span").html(
+    "Information: <b>" + new URL(label).host + "</b>"
+  );
+
   $("#chartClickInfo").hide();
-  chartClickInfo;
   $("#timeSpendChart").show();
   $("#tblheaderRow").html("");
   $(".tabularDetails").hide();
@@ -276,6 +285,7 @@ function showTimeSpendChart(data, totalHours) {
 
 function renderHistroyOnTable(siteDomains, visitCount, colors) {
   $("#timeSpendChart").hide();
+  $(".MainTableInfo").show();
   $("#histroyDetails").show();
   // $(".tabularDetails").hide();
   $("#historyTableHeaders").html("");
@@ -317,7 +327,9 @@ function renderHistroyOnTable(siteDomains, visitCount, colors) {
         index +
         '>  <span class="siteColor" style="background-color:' +
         colors[siteVisited.index] +
-        '"> </span> <span class="siteDetailsName"> ' +
+        '"> </span> <span class="siteDetailsName" id="' +
+        siteDomain +
+        '"> ' +
         currentDomain +
         " </span> -  <span>" +
         visitedCount +
@@ -369,6 +381,10 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
       },
     ],
   };
+
+  $(".doughnetChartInfo span").html("Site usage on this browser");
+
+  $(".MainTableInfo span").html("Site visted counts");
 
   Chart.pluginService.register({
     beforeDraw: function (chart) {
@@ -518,22 +534,6 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
     },
   });
 
-  // setTimeout(function () {
-  //   var width = pieChart.chart.width,
-  //     height = pieChart.chart.height,
-  //     ctx = pieChart.chart.ctx;
-  //   var fontSize = (height / 224).toFixed(2);
-  //   ctx.font = fontSize + "em sans-serif";
-  //   ctx.textBaseline = "middle";
-
-  //   var text = getSiteTotals(urlDomain.length),
-  //     textX = Math.round((width - ctx.measureText(text).width) / 2),
-  //     textY = height / 2;
-
-  //   ctx.fillText(text, textX, textY);
-  //   ctx.save();
-  // }, 1000);
-
   siteCanvas.onclick = function (evt) {
     pieChart.update();
     var activePoints = pieChart.getElementsAtEvent(evt);
@@ -564,6 +564,9 @@ function renderChartItems(urlDomain, visitedCount, itemColor) {
 function backToMainList() {
   $("#mainListBackButton").hide();
   $("#chartClickInfo").show();
+  $(".MainTableInfo").show();
+  $(".doughnetChartInfo span").html("Site usage on this browser");
+
   $("#timeSpendChart").hide();
   $("#histroyDetails").show();
   $("#chartInfo").hide();
@@ -829,11 +832,11 @@ $(document).ready(function () {
   });
 
   $("#recurringDaysOptionsValue").change(function (event) {
-    var selectedText = $(".recurringDaysOptionsValues:selected").text();
-    if (selectedText == "Monthly") {
+    var selectedText = $(".recurringDaysOptionsValues:selected").val();
+    if (selectedText == "2") {
       $("#recurringDateValue").show();
       $(".recurringDurationOptionDays").hide();
-    } else if (selectedText == "Weekly") {
+    } else if (selectedText == "1") {
       $("#recurringDateValue").hide();
       $(".recurringDurationOptionDays").show();
     } else {
@@ -899,7 +902,9 @@ function fetchRemainder() {
           " </td>" +
           '<td data-label="TargetURL"> <i class="large delete outline icon" id=' +
           remainder.id +
-          '></i> <i class="large edit outline icon"></i></td>' +
+          '></i> <i class="large edit outline icon" id=' +
+          remainder.id +
+          "></i></td>" +
           "<tr>";
 
         $(" #RemainderTableBody ").append(tblRow);
@@ -942,7 +947,10 @@ function saveRemaindar() {
   }
 
   setAlarmForReminder = function (result) {
+    emptyRemainderFields();
+
     $("#RemainderTableBody").html("");
+
     fetchRemainder();
     //createAlarmForRemainder(remainder, result);
     //code to send message to open notification. This will eventually move into my extension logic
@@ -963,6 +971,27 @@ $(document.body).on("click", ".delete", function (event) {
   $("#RemainderTableBody").html("");
   fetchRemainder();
 });
+
+$(document.body).on("click", ".siteMiniContainer", function (event) {
+  let parentContainer = $(event.target).closest(".siteMiniContainer"),
+    targetClass = $(parentContainer).find(".siteDetailsName");
+
+  if (targetClass && targetClass[0]) {
+    let label = $(targetClass).attr("id");
+    if (domainDetails[label] && domainDetails[label].visitedDetails) {
+      renderSiteHistroyOnTable(domainDetails[label].visitedDetails, label);
+      renderhelperCharts(domainDetails[label].visitedDetails);
+    }
+  }
+});
+
+function emptyRemainderFields() {
+  $("#reminderDate").val("");
+
+  $("#reminderTime").val("");
+
+  $("#message").val("");
+}
 
 function deleteRemainder(id) {
   del("RemaindME", "RemaindMEDB", id, true);

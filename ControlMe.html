@@ -8,7 +8,7 @@
     />
     <link rel="stylesheet" href="./main.css" />
     <link rel="stylesheet" href="./dropdown.min.css" />
-    <link rel="icon" href="./Logo/LogoIcon.png" type="image/icon type">
+    <link rel="icon" href="./Logo/LogoIcon.png" type="image/icon type" />
   </head>
 
   <body>
@@ -50,10 +50,10 @@
               <input type="hidden" name="gender" />
               <i class="dropdown icon"></i>
               <div class="default text"></div>
-              <div class="menu">
-                <div class="item" data-value="0" selected>Daily</div>
-                <div class="item" data-value="1">Weekly</div>
-                <div class="item" data-value="2">Monthly</div>
+              <div class="menu" id="basisDropdown">
+                <div class="item" id="value_0" data-value="0" selected>Daily</div>
+                <div class="item" id="value_1" data-value="1">Weekly</div>
+                <div class="item" id="value_2" data-value="2">Monthly</div>
               </div>
             </div>
             <input
@@ -62,6 +62,8 @@
               placeholder="Restricted hour"
             />
             <button class="ui button" id="addSiteControl">Add Control</button>
+            <button class="ui button" id="updateSiteControl">Update Control</button>
+            <button class="ui button" id="cancel">Cancel</button>
           </div>
           <!-- <button class="ui button gray" id="getAllLS">
             Get Local Storage

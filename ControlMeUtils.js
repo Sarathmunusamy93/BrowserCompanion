@@ -1,6 +1,8 @@
 $(document).ready(function () {
   $(".ui.dropdown").dropdown();
 
+  $("#updateSiteControl").hide();
+
   renderControlSitesList();
 
   $("#controlsDetailsTableBody").on("click", "#controlStatus", function () {
@@ -32,7 +34,14 @@ $("#clearLS").click(function () {
   });
 });
 
-$("#addSiteControl").click(function (event) {
+$("#updateSiteControl").click(function (event) {
+  newControlsEnteries();
+
+  $("#updateSiteControl").hide();
+  $("#addSiteControl").show();
+});
+
+function newControlsEnteries() {
   var controlEntry = {
     targetURL: $("#controlSiteURL").val(),
     basis: $(".dropdown").dropdown("get text")[0],
@@ -50,6 +59,18 @@ $("#addSiteControl").click(function (event) {
       saveControlSiteInlocalStorage(controlSiteDetails);
     }
   );
+
+  clearFields();
+}
+
+function clearFields() {
+  $("#controlSiteURL").val("");
+  $("#controlHours").val("");
+  $(".text").html("");
+}
+
+$("#addSiteControl").click(function (event) {
+  newControlsEnteries();
 });
 
 function saveControlSiteInlocalStorage(cntrlSiteDetails) {
@@ -135,19 +156,21 @@ function renderControlSitesList() {
         var tblRow =
           '  <tr id="row' +
           index +
-          '"> <td data-label="DateTime"> ' +
+          '"> <td data-label="DateTime" class="status"> ' +
           statusButton +
-          '  </td>  <td data-label="DateTime">  ' +
+          '  </td>  <td data-label="DateTime" class="targetURL">  ' +
           result.targetURL +
-          '  </td>  <td data-label="Message"> ' +
+          '  </td>  <td data-label="Message" class="basis"> ' +
           result.basis +
           " </td> " +
-          '<td data-label="TargetURL"> ' +
+          '<td data-label="TargetURL" class="hours"> ' +
           result.hours +
           " </td>" +
           '<td data-label="TargetURL"> <i class="large delete outline icon" id=' +
           result.id +
-          '></i> <i class="large edit outline icon"></i></td>' +
+          '></i> <i class="large edit outline icon" id=' +
+          result.id +
+          "></i></td>" +
           "</tr>";
 
         $(" #controlsDetailsTableBody ").append(tblRow);
@@ -164,6 +187,30 @@ $(document.body).on("click", ".delete", function (event) {
   $("#controlsDetailsTableBody").html("");
   renderControlSitesList();
 });
+
+$(document.body).on("click", ".edit", function (event) {
+  editControls(event);
+});
+
+function editControls(event) {
+  let id = parseInt(event.target.id),
+    parentRowID = $($(event.target).closest("tr")).attr("id"),
+    targetURL = $("#" + parentRowID + " .targetURL").html(),
+    basis = $("#" + parentRowID + " .basis").html(),
+    hours = $("#" + parentRowID + " .hours").html();
+  hours = "" + parseInt(hours);
+
+  $(".text").html(basis);
+  $("#value_0").addClass("selected");
+
+  $("#controlSiteURL").val(targetURL);
+  $("#controlHours").val(hours);
+
+  $("#updateSiteControl").show();
+  $("#addSiteControl").hide();
+
+  deleteControls(id);
+}
 
 function deleteControls(id) {
   del("controlSiteBase", "ControlSiteDB", id, true);

@@ -52,6 +52,24 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     chrome.storage.sync.clear();
   } else if (request.type == "fetchBrowserHistoryCE") {
     fetchBrowserHistoryCE(sender.tab.id);
+  } else if(request.type == "test"){
+    
+chrome.devtools.network.getHAR(
+  function(data){
+    console.log(data);
+  }
+)
+
+
+chrome.devtools.network.onRequestFinished.addListener(
+  function(request) {
+    if (request.response.bodySize > 40*1024) {
+      chrome.devtools.inspectedWindow.eval(
+          'console.log("Large image: " + unescape("' +
+          escape(request.request.url) + '"))');
+    }
+  }
+);
   }
 });
 
@@ -121,7 +139,7 @@ chrome.alarms.onAlarm.addListener((alarm) => {
 
       var notificationOptions = {
         type: "basic",
-        iconUrl: "./img/android.png",
+        iconUrl: "./Logo/LogoIcon.png",
         title: "Track Me Remainder",
         message: remainder_obj.Message,
 
@@ -316,7 +334,7 @@ function setMoniterRestrictedSite(restrictedSite, targetURL) {
 function setCntrlSiteWatchDog(restrictedSite) {
   var notificationOptions = {
     type: "basic",
-    iconUrl: "./img/android.png",
+    iconUrl: "./Logo/LogoIcon.png",
     title: "Track Me Remainder",
     message: "You have crossed your limit on this site!!!",
   };

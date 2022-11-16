@@ -1,16 +1,25 @@
 /*Start Page Style */
 
 #startPageContainer {
-  margin: 15% 40%;
-  border-color: #002e94 !important;
+  margin-left: 40%;
+
+  width: 40%;
+  height: 25%;
+  margin-left: 30% !important;
+}
+
+#addSiteControl, #updateSiteControl {
+  color: #fff;
+  background-color: #7ec8e3ff;
+}
+
+#startPageInnerContainer {
+  border-color: #000 !important;
   border: azure;
   border-style: solid;
   background-color: white;
   border-radius: 10px 15px 15px 10px;
 
-  width: 40%;
-  height: 25%;
-  margin-left: 35% !important;
   align-items: center;
   align-content: center;
   text-align: center;
@@ -19,6 +28,11 @@
   flex-direction: column;
   text-align: center;
 }
+.startPageFullLogo {
+  margin-bottom: -16%;
+  width: 100%;
+  margin-left: 15%;
+}
 
 #startPageContainer .column {
   padding-top: 8%;
@@ -26,7 +40,7 @@
 }
 
 .column .button {
-  background-color: #2192ff;
+  background-color: #7ec8e3ff;
   color: white;
   font-size: 14px;
   font-family: sans-serif;
@@ -55,7 +69,6 @@
   height: 15% !important;
 }
 .item1.page1 {
-
   /* height: 28%; */
   font-size: larger;
   align-items: center;
@@ -63,8 +76,8 @@
   /* display: flex !important; */
   justify-content: center !important;
   align-items: center !important;
-  /* border-color: #002e94; */ 
-  color: #2192ff !important;
+  /* border-color: #002e94; */
+  color: #7ec8e3ff !important;
 }
 
 .ui.dropdown .menu .item {
@@ -78,7 +91,7 @@
 
 /* dashboard area */
 .dashboardContainer {
-  margin: 10px 60px;
+  margin: 20px 0px 10px 115px;
   display: flex;
   gap: 15px;
 }
@@ -128,6 +141,7 @@
 
 #navContainer {
   height: 70px !important;
+  border-bottom: groove black 2px;
 }
 
 #navContainer .item {
@@ -140,7 +154,7 @@
 }
 
 #navContainer .selected {
-  background-color: #2192ff !important;
+  background-color: #7ec8e3ff !important;
   color: white !important;
 }
 
@@ -166,6 +180,7 @@
 .helperChartsContainer {
   display: flex;
   flex-direction: column;
+  margin-left: 2%;
 }
 
 #siteHistroyDetails {
@@ -242,12 +257,12 @@
 }
 
 .doughnetChartInfo {
-  margin-left: 20%;
+  margin-left: 17%;
   font-size: 17px;
 }
 
 .MainTableInfo {
-  margin-left: 40%;
+  margin-left: 35%;
   font-size: 17px;
 }
 .tabularDetails {
@@ -270,7 +285,7 @@
   border: black;
   border: 1px;
   border-style: groove;
-  border-color: #2192ff;
+  border-color: #7ec8e3ff;
 }
 
 .siteRepresentation {
@@ -320,6 +335,7 @@
   color: black;
   padding: 10px;
   flex: 0 0 auto;
+  cursor: pointer;
 }
 
 #controlsDetails {
@@ -335,8 +351,8 @@
 }
 
 .chartFilterBtn:hover {
-  border-color: #002e94 !important;
-  color: #002e94 !important;
+  border-color: #7ec8e3ff !important;
+  color: #7ec8e3ff !important;
 }
 .remainderCategory {
   margin: 2% 0% 0px 35%;

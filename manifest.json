@@ -12,7 +12,8 @@
     "alarms",
     "notifications",
     "storage",
-    "webRequest"
+    "webRequest",
+    "devtools_page"
   ],
   "action": {},
   "content_scripts": [
