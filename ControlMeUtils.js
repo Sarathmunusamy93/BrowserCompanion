@@ -3,7 +3,31 @@ $(document).ready(function () {
 
   $("#updateSiteControl").hide();
 
+  $("#cancel").click(function (event) {
+    $("#controlSiteURL").val("");
+    $("#durationValue").val("");
+    $("#controlHours").val("");
+  });
+
   renderControlSitesList();
+
+  let myVar = setInterval(myTimer, 100);
+
+  function myTimer() {
+    let iconColor = getRandomColor() + "!important";
+     
+    $(".controlMeInfo .info").attr("style", "color:" + iconColor);
+    // $(".controlMeInfo .info").attr("style", "width: " + iconWidth);
+  }
+
+  setTimeout(function () {
+    clearInterval(myVar);
+    $(".controlMeInfo .info").attr("style", "color:#2185d0 !important");
+  }, 2000);
+
+  $("body .button").popup({
+    boundary: ".container .controlMeInfo",
+  });
 
   $("#controlsDetailsTableBody").on("click", "#controlStatus", function () {
     if ($(this).hasClass("active")) {
@@ -35,11 +59,34 @@ $("#clearLS").click(function () {
 });
 
 $("#updateSiteControl").click(function (event) {
-  newControlsEnteries();
+  validateControlFields(function (isFieldsValid) {
+    if (isFieldsValid) {
+      newControlsEnteries();
 
-  $("#updateSiteControl").hide();
-  $("#addSiteControl").show();
+      $("#updateSiteControl").hide();
+      $("#addSiteControl").show();
+    }
+  });
 });
+
+function getRandomColor(currentColors) {
+  var letters = "0123456789ABCDEF".split("");
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+
+  if (currentColors) {
+    if (currentColors.indexOf(color) != -1) {
+      console.log("It is duplicate color: " + color);
+      getRandomColor(currentColors);
+    } else {
+      return color;
+    }
+  }
+
+  return color;
+}
 
 function newControlsEnteries() {
   var controlEntry = {
@@ -48,6 +95,9 @@ function newControlsEnteries() {
     hours: $("#controlHours").val(),
     status: true,
   };
+
+  let endLength = controlEntry.targetURL.indexOf(".com");
+  controlEntry.targetURL = controlEntry.targetURL.substring(0, endLength + 4);
 
   add(
     "controlSiteBase",
@@ -70,8 +120,31 @@ function clearFields() {
 }
 
 $("#addSiteControl").click(function (event) {
-  newControlsEnteries();
+  validateControlFields(function (isFieldsValid) {
+    if (isFieldsValid) newControlsEnteries();
+  });
 });
+
+function validateControlFields(callback) {
+  let url = $("#controlSiteURL").val(),
+    duration = $(".dropdown").dropdown("get text")[0],
+    hours = $("#controlHours").val();
+
+  if (url != "" && duration != "" && hours != "") {
+    if (url.indexOf("www") != -1 && url.indexOf(".com") != -1) {
+      $("#ErrorSummary").hide();
+      callback(true);
+    } else {
+      callback(false);
+      $("#ErrorSummary").show();
+      $("#ErrorSummary").html("Enter Valid URL");
+    }
+  } else {
+    callback(false);
+    $("#ErrorSummary").show();
+    $("#ErrorSummary").html("Please fill all fields");
+  }
+}
 
 function saveControlSiteInlocalStorage(cntrlSiteDetails) {
   var validityDate = 0;
@@ -156,9 +229,7 @@ function renderControlSitesList() {
         var tblRow =
           '  <tr id="row' +
           index +
-          '"> <td data-label="DateTime" class="status"> ' +
-          statusButton +
-          '  </td>  <td data-label="DateTime" class="targetURL">  ' +
+          '">   <td data-label="DateTime" class="targetURL">  ' +
           result.targetURL +
           '  </td>  <td data-label="Message" class="basis"> ' +
           result.basis +
@@ -214,4 +285,12 @@ function editControls(event) {
 
 function deleteControls(id) {
   del("controlSiteBase", "ControlSiteDB", id, true);
+}
+
+// Render Status button
+
+{
+  /* <td data-label="DateTime" class="status"> ' +
+          statusButton +
+          '  </td> */
 }

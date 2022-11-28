@@ -52,11 +52,11 @@ $("#resetChart").click(function (event) {
 });
 
 $("#todayFilter").click(function (event) {
-  chrome.runtime.sendMessage({
-    type: "test",
-    options: {},
-  });
-  //filterChartData("day", event.currentTarget.id);
+  // chrome.runtime.sendMessage({
+  //   type: "test",
+  //   options: {},
+  // });
+  filterChartData("day", event.currentTarget.id);
 });
 
 $("#weekFilter").click(function (event) {
