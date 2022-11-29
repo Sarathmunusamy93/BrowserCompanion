@@ -103,6 +103,7 @@
   margin-top: 100px !important;
   width: 80% !important;
   margin-left: 10% !important;
+  /* position: absolute; */
 }
 
 .dashboardBody,
@@ -201,7 +202,7 @@
 
 .controlMeUserInput {
   height: 20%;
-  margin-top: 10px !important;
+  margin-top: -6% !important;
   width: 80% !important;
   margin-left: 10% !important;
 }
@@ -216,9 +217,28 @@
   width: 80%;
 }
 
+/* .cntrlMeTopMenu {
+  display: flex;
+  flex-direction: row;
+ 
+} */
+
+/* .cntrlMeTitle {
+
+  margin-left: 30% !important;
+  font-size: x-large;
+} */
+
 .controlMeInfo {
+  position: absolute;
+  background-color: #fff !important;
   margin-top: 100px !important;
   margin-left: 40px !important;
+}
+
+.reminderMeInfo {
+  margin-top: 80px !important;
+  margin-left: 20px !important;
   position: absolute;
   background-color: #fff !important;
 }
@@ -243,7 +263,7 @@
 }
 
 .addNewRecurringRemainder {
-  margin: 15px 5%;
+  margin: 15px 0%;
   height: 3em;
   display: flex;
   flex-direction: row;

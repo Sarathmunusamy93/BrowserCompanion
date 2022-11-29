@@ -15,7 +15,7 @@ $(document).ready(function () {
 
   function myTimer() {
     let iconColor = getRandomColor() + "!important";
-     
+
     $(".controlMeInfo .info").attr("style", "color:" + iconColor);
     // $(".controlMeInfo .info").attr("style", "width: " + iconWidth);
   }
@@ -131,7 +131,7 @@ function validateControlFields(callback) {
     hours = $("#controlHours").val();
 
   if (url != "" && duration != "" && hours != "") {
-    if (url.indexOf("www") != -1 && url.indexOf(".com") != -1) {
+    if (url.indexOf(".") != -1) {
       $("#ErrorSummary").hide();
       callback(true);
     } else {

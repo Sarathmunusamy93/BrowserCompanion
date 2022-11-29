@@ -69,6 +69,57 @@ $("#yearFilter").click(function (event) {
   filterChartData("year", event.currentTarget.id);
 });
 
+$(document.body).on("click", ".edit", function (event) {
+  editReminder(event);
+});
+
+function editReminder(event) {
+  let id = parseInt(event.target.id),
+    parentRowID = $($(event.target).closest("tr")).attr("id"),
+    recurringFrequency = $("#" + parentRowID + " .recurringFrequency").html(),
+    dateTime = $("#" + parentRowID + " .DateTime").html(),
+    message = $("#" + parentRowID + " .Message").html(),
+    targetURL = $("#" + parentRowID + " .TargetURL").html();
+
+  if (recurringFrequency == "One Time") {
+    $("#oneTimeReminder").click();
+    $("#dateValue").calendar("set date", new Date(dateTime).toISOString());
+    $("#timeValue").calendar("set date", new Date(dateTime).toTimeString());
+    $("#message").val(message);
+    $("#targetURL").val(targetURL);
+
+    deleteRemainder(parseInt(event.target.id));
+  } else {
+    $("#recurringReminder").click();
+    let duration = $(".recurringDurationOption .text").val(),
+      dropdownDurationMenu = $(".recurringDurationOption .menu .item"),
+      durationIndex = 0;
+
+    if (recurringFrequency.replace(" ", "") == "Monthly") {
+      $(dropdownDurationMenu)[0].click();
+      $("#recurringDate").calendar(
+        "set date",
+        new Date(dateTime).toISOString()
+      );
+      $("#recurringTime").calendar(
+        "set date",
+        new Date(dateTime).toTimeString()
+      );
+      $("#recurringMessage").val(message);
+      $("#recurringTargetURL").val(targetURL);
+    } else {
+      if (recurringFrequency.replace(" ", "") == "Weekly") {
+        $(dropdownDurationMenu)[1].click();
+        $("#recurringMessage").val(message);
+        $("#recurringTargetURL").val(targetURL);
+
+      } else {
+        $(dropdownDurationMenu)[2].click();
+      }
+    }
+  }
+}
+
 function removeFilterBtnHighlight() {
   $(".chartFilterBtn").css("background-color", white);
 }
@@ -768,6 +819,20 @@ function getRandomColor(currentColors) {
   return color;
 }
 
+let myVar = setInterval(myTimer, 100);
+
+function myTimer() {
+  let iconColor = getRandomColor() + "!important";
+
+  $(".reminderMeInfo .info").attr("style", "color:" + iconColor);
+  // $(".controlMeInfo .info").attr("style", "width: " + iconWidth);
+}
+
+setTimeout(function () {
+  clearInterval(myVar);
+  $(".reminderMeInfo .info").attr("style", "color:#2185d0 !important");
+}, 2000);
+
 function enableEndDate() {
   $("#filterEndDate").prop("disabled", false);
 }
@@ -887,25 +952,7 @@ function fetchRemainder() {
         let frequency = remainder.isRecurring
           ? remainder.frequency
           : "One Time";
-        var tblRow =
-          '  <tr id="row' +
-          index +
-          '">  <td data-label="recurringFrequency">  ' +
-          frequency +
-          '   <td data-label="DateTime">  ' +
-          remainder.dateTime +
-          '  </td>  <td data-label="Message"> ' +
-          remainder.Message +
-          " </td> " +
-          '<td data-label="TargetURL"> ' +
-          remainder.targetURL +
-          " </td>" +
-          '<td data-label="TargetURL"> <i class="large delete outline icon" id=' +
-          remainder.id +
-          '></i> <i class="large edit outline icon" id=' +
-          remainder.id +
-          "></i></td>" +
-          "<tr>";
+        var tblRow = `  <tr id="row${index}">  <td data-label="recurringFrequency" class="recurringFrequency">${frequency}<td data-label="DateTime" class="DateTime">${remainder.dateTime}</td>  <td data-label="Message" class="Message">${remainder.Message}</td> <td data-label="TargetURL" class="TargetURL" >${remainder.targetURL} </td><td data-label="TargetURL"> <i class="large delete outline icon" id=${remainder.id}></i> <i class="large edit outline icon" id=${remainder.id}></i></td><tr>`;
 
         $(" #RemainderTableBody ").append(tblRow);
       });
@@ -920,7 +967,7 @@ function saveRemaindar() {
 
   let isRecurringRemainder = $("#recurringReminder").attr("checked"),
     remainder = {},
-    requency = $("#recurringDaysOptionsValue :selected").text();
+    requency = $(".recurringDurationOption .text").text();
 
   if (isRecurringRemainder) {
     remainder = {
@@ -933,7 +980,7 @@ function saveRemaindar() {
       Message: $("#recurringMessage").val(),
       isURLLaunchEnabled: $("#launchURL").is(":checked"),
       targetURL: $("#recurringTargetURL").val(),
-      frequency: $("#recurringDaysOptionsValue :selected").text(),
+      frequency: $(".recurringDurationOption .text").text(),
       isRecurring: true,
     };
   } else {
