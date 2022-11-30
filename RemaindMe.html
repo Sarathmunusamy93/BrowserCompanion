@@ -46,158 +46,174 @@
         >
           <i class="info blue large circle icon"></i>
         </div>
-        <div class="remindeMeBodyctrl">
-          <div>
-            <!-- <div > </div>style="margin-top: 10px" class="ui container"> -->
-            <!-- <button class="ui icon button addRemainderbtn" id="addRemainder">Add New Remainder
+        <div class="reminderMeError"></div>
+        <div class="reminderMeBodyContainer">
+          <div class="remindeMeBodyctrl">
+            <div>
+              <!-- <div > </div>style="margin-top: 10px" class="ui container"> -->
+              <!-- <button class="ui icon button addRemainderbtn" id="addRemainder">Add New Remainder
                 <i class="huge bell icon addRemainder"></i>
             </button> -->
 
-            <div class="remainderCategory">
-              <input
-                type="radio"
-                id="oneTimeReminder"
-                style="margin-right: 5px"
-                checked
-              />One Time
-              <input
-                type="radio"
-                id="recurringReminder"
-                style="margin-right: 5px"
-              />Recurring
-            </div>
-            <div class="addNewRemainderForOneTime">
-              <div class="ui calendar" id="dateValue">
-                <div class="ui input left icon">
-                  <i class="calendar icon"></i>
-                  <input type="text" id="reminderDate" placeholder="Date" />
+              <div class="remainderCategory">
+                <div class="ui buttons">
+                  <button class="ui positive button" id="oneTimeReminder">
+                    One Time
+                  </button>
+                  <div class="or"></div>
+                  <button class="ui button" id="recurringReminder">
+                    Recurring
+                  </button>
                 </div>
-              </div>
 
-              <div class="ui calendar" id="timeValue">
-                <div class="ui input left icon">
-                  <i class="calendar icon"></i>
-                  <input type="text" id="reminderTime" placeholder="time" />
-                </div>
+                <!-- <input
+                  type="radio"
+                  id="oneTimeReminder"
+                  style="margin-right: 5px"
+                  checked
+                />One Time
+                <input
+                  type="radio"
+                  id="recurringReminder"
+                  style="margin-right: 5px"
+                />Recurring -->
               </div>
-              <!-- <input type="date" id="dateValue" /> <input type="time" id="timeValue" /> -->
-              <textarea id="message" placeholder="Enter Message"> </textarea>
-              <!-- 
+              <div class="addNewRemainderForOneTime">
+                <div class="ui calendar" id="dateValue">
+                  <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input type="text" id="reminderDate" placeholder="Date" />
+                  </div>
+                </div>
+
+                <div class="ui calendar" id="timeValue">
+                  <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input type="text" id="reminderTime" placeholder="time" />
+                  </div>
+                </div>
+                <!-- <input type="date" id="dateValue" /> <input type="time" id="timeValue" /> -->
+                <textarea id="message" placeholder="Enter Message"> </textarea>
+                <!-- 
             <div class="lanchURL">
               <input type="checkbox" id="launchURL"> show any URL to Lanch ?
             </div> -->
-              <input type="url" id="targetURL" placeholder="Lauch URL" />
-              <button class="ui icon button addRemainderbtn" id="addRemainder">
-                Add New Remainder
-              </button>
-              <button
-                class="ui icon button cancelRemainderbtn"
-                id="cancelRecurringRemainder"
-              >
-                Discard
-              </button>
-            </div>
-
-            <div class="addNewRecurringRemainder">
-              <select
-                class="ui dropdown recurringDurationOption"
-                id="recurringDaysOptionsValue"
-                style="width: 100px"
-              >
-                <option
-                  class="recurringDaysOptionsValues"
-                  value="0"
-                  selected
-                  style="color: black"
+                <input type="url" id="targetURL" placeholder="Lauch URL" />
+                <button
+                  class="ui icon button addRemainderbtn"
+                  id="addRemainder"
                 >
-                  Daily
-                </option>
-                <option
-                  class="recurringDaysOptionsValues"
-                  value="1"
-                  style="color: black"
+                  Add New Remainder
+                </button>
+                <button
+                  class="ui icon button cancelRemainderbtn"
+                  id="cancelRemainderInputs"
                 >
-                  Weekly
-                </option>
-                <option
-                  class="recurringDaysOptionsValues"
-                  value="2"
-                  style="color: black"
-                >
-                  Monthly
-                </option>
-              </select>
-
-              <div class="ui calendar" id="recurringDate">
-                <div class="ui input left icon">
-                  <i class="calendar icon"></i>
-                  <input
-                    type="text"
-                    id="recurringDateValue"
-                    placeholder="Date"
-                  />
-                </div>
+                  Discard
+                </button>
               </div>
 
-              <!-- <input type="date" id="recurringDateValue" /> -->
+              <div class="addNewRecurringRemainder">
+                <select
+                  class="ui dropdown recurringDurationOption"
+                  id="recurringDaysOptionsValue"
+                  style="width: 100px"
+                >
+                  <option
+                    class="recurringDaysOptionsValues"
+                    value="0"
+                    selected
+                    style="color: black"
+                  >
+                    Daily
+                  </option>
+                  <option
+                    class="recurringDaysOptionsValues"
+                    value="1"
+                    style="color: black"
+                  >
+                    Weekly
+                  </option>
+                  <option
+                    class="recurringDaysOptionsValues"
+                    value="2"
+                    style="color: black"
+                  >
+                    Monthly
+                  </option>
+                </select>
 
-              <select
-                class="ui dropdown recurringDurationOptionDays"
-                id="recurringDaysOptions"
-              >
-                <option value="0" selected>All Days</option>
-              </select>
-              <div class="ui calendar" id="recurringTime">
-                <div class="ui input left icon">
-                  <i class="calendar icon"></i>
-                  <input
-                    type="text"
-                    id="recurringTimeValue"
-                    placeholder="time"
-                  />
+                <div class="ui calendar" id="recurringDate">
+                  <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input
+                      type="text"
+                      id="recurringDateValue"
+                      placeholder="Date"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <textarea id="recurringMessage" placeholder="Enter Message">
-              </textarea>
-              <!-- <input type="time" id="recurringTimeValue" /> -->
-              <!-- <div class="lanchURL">
+                <!-- <input type="date" id="recurringDateValue" /> -->
+
+                <select
+                  class="ui dropdown recurringDurationOptionDays"
+                  id="recurringDaysOptions"
+                >
+                  <option value="0" selected>All Days</option>
+                </select>
+                <div class="ui calendar" id="recurringTime">
+                  <div class="ui input left icon">
+                    <i class="calendar icon"></i>
+                    <input
+                      type="text"
+                      id="recurringTimeValue"
+                      placeholder="time"
+                    />
+                  </div>
+                </div>
+
+                <textarea id="recurringMessage" placeholder="Enter Message">
+                </textarea>
+                <!-- <input type="time" id="recurringTimeValue" /> -->
+                <!-- <div class="lanchURL">
               <input type="checkbox" id="launchURL"> show any URL to Lanch ?
             </div> -->
-              <input
-                type="url"
-                id="recurringTargetURL"
-                placeholder="Lauch URL"
-              />
+                <input
+                  type="url"
+                  id="recurringTargetURL"
+                  placeholder="Lauch URL"
+                />
 
-              <button
-                class="ui icon button addRemainderbtn"
-                id="addRecurringRemainder"
-              >
-                Add New Remainder
-              </button>
-              <button
-                class="ui icon button cancelRemainderbtn"
-                id="cancelRecurringRemainder"
-              >
-                Discard
-              </button>
+                <button
+                  class="ui icon button addRemainderbtn"
+                  id="addRecurringRemainder"
+                >
+                  Add New Remainder
+                </button>
+                <button
+                  class="ui icon button cancelRemainderbtn"
+                  id="cancelRecurringRemainder"
+                >
+                  Discard
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <table class="ui celled table" id="remaindMeDetails">
-          <thead>
-            <tr>
-              <th>Type</th>
-              <th>Date and Time</th>
-              <th>Message</th>
-              <th>URL</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="RemainderTableBody"></tbody>
-        </table>
+          <table class="ui celled table" id="remaindMeDetails">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Date and Time</th>
+                <th>Message</th>
+                <th>URL</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="RemainderTableBody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 

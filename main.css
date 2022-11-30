@@ -97,10 +97,14 @@
   gap: 15px;
 }
 
+.reminderMeBodyContainer {
+  margin-top: 110px !important;
+}
+
 .remindeMeBodyctrl,
 #remaindMeDetails {
   height: 20%;
-  margin-top: 100px !important;
+  margin-top: 50px !important;
   width: 80% !important;
   margin-left: 10% !important;
   /* position: absolute; */
@@ -202,7 +206,7 @@
 
 .controlMeUserInput {
   height: 20%;
-  margin-top: -6% !important;
+  margin-top: -4% !important;
   width: 80% !important;
   margin-left: 10% !important;
 }
@@ -254,8 +258,20 @@
   font-size: 15px;
 }
 
+.ui.positive {
+  background-color: #7ec8e3ff !important;
+}
+
+.reminderMeError {
+  position: absolute;
+  margin-top: 80px !important;
+  margin-left: 600px;
+  color: red;
+  display: none;
+}
+
 .addNewRemainderForOneTime {
-  margin: 15px 5%;
+  margin: 25px 5%;
   display: flex;
   flex-direction: row;
   width: 100%;

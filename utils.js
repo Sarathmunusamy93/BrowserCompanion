@@ -45,6 +45,10 @@ let URLDetails = [];
 var domainDetails = {};
 var pieChart, weekChart, dayChart, hoursChart, timeSpendChart;
 
+$("#cancelRecurringRemainder, #cancelRemainderInputs").click(function (event) {
+  emptyRemainderFields();
+});
+
 $("#resetChart").click(function (event) {
   $(".chartFilterBtn").attr("style", "background-color:white");
   domainDetails = {};
@@ -96,7 +100,7 @@ function editReminder(event) {
       durationIndex = 0;
 
     if (recurringFrequency.replace(" ", "") == "Monthly") {
-      $(dropdownDurationMenu)[0].click();
+      $(dropdownDurationMenu)[2].click();
       $("#recurringDate").calendar(
         "set date",
         new Date(dateTime).toISOString()
@@ -109,15 +113,38 @@ function editReminder(event) {
       $("#recurringTargetURL").val(targetURL);
     } else {
       if (recurringFrequency.replace(" ", "") == "Weekly") {
+        let indexFirstNumber = dateTime.search(/\d/),
+          dayConstrain = dateTime.substr(0, indexFirstNumber - 1),
+          timeConstrain = dateTime.substr(
+            indexFirstNumber,
+            dateTime.length - 1
+          ),
+          dayDropdownOptions = $(".recurringDurationOptionDays .menu .item"),
+          daysOptions = [
+            "All Days",
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+          ],
+          selectedOptions = daysOptions.indexOf(dayConstrain);
+
+        $(dayDropdownOptions)[selectedOptions].click();
+
         $(dropdownDurationMenu)[1].click();
         $("#recurringMessage").val(message);
         $("#recurringTargetURL").val(targetURL);
-
+        $("#recurringTime").calendar("set date", timeConstrain);
       } else {
-        $(dropdownDurationMenu)[2].click();
+        $(dropdownDurationMenu)[0].click();
       }
     }
   }
+
+  deleteRemainder(id);
 }
 
 function removeFilterBtnHighlight() {
@@ -873,12 +900,20 @@ $(document).ready(function () {
   $("#recurringDate").calendar({ type: "date" });
 
   $("#recurringReminder").click(function () {
+    $("#recurringReminder").addClass("positive");
+    $("#oneTimeReminder").removeClass("positive");
     $("#recurringReminder").attr("checked", true);
     $("#oneTimeReminder").attr("checked", false);
+    $(".reminderMeError").hide();
+    $(".reminderMeError").html("");
   });
   $("#oneTimeReminder").click(function () {
+    $("#oneTimeReminder").addClass("positive");
+    $("#recurringReminder").removeClass("positive");
     $("#recurringReminder").attr("checked", false);
     $("#oneTimeReminder").attr("checked", true);
+    $(".reminderMeError").hide();
+    $(".reminderMeError").html("");
   });
 
   moment.weekdays().forEach(function (day, index) {
@@ -967,50 +1002,83 @@ function saveRemaindar() {
 
   let isRecurringRemainder = $("#recurringReminder").attr("checked"),
     remainder = {},
-    requency = $(".recurringDurationOption .text").text();
+    requency = $(".recurringDurationOption .text").text(),
+    isValidationErrorOccurs = false;
+
+  $(".reminderMeError").hide();
+  $(".reminderMeError").html("");
 
   if (isRecurringRemainder) {
-    remainder = {
-      dateTime:
-        (requency != "Monthly"
-          ? $("#recurringDaysOptions :selected").text()
-          : $("#recurringDateValue").val()) +
-        " " +
-        $("#recurringTimeValue").val(),
-      Message: $("#recurringMessage").val(),
-      isURLLaunchEnabled: $("#launchURL").is(":checked"),
-      targetURL: $("#recurringTargetURL").val(),
-      frequency: $(".recurringDurationOption .text").text(),
-      isRecurring: true,
-    };
+    let recurringDateValue = $("#recurringDateValue").val(),
+      recurringTargetURL = $("#recurringTargetURL").val(),
+      recurringDurationOption = $(".recurringDurationOption .text").text();
+
+    if (
+      recurringDurationOption != "" &&
+      recurringTargetURL != "" &&
+      recurringDurationOption != ""
+    ) {
+      remainder = {
+        dateTime:
+          (requency != "Monthly"
+            ? $("#recurringDaysOptions :selected").text()
+            : recurringDateValue) +
+          " " +
+          $("#recurringTimeValue").val(),
+        Message: $("#recurringMessage").val(),
+        isURLLaunchEnabled: $("#launchURL").is(":checked"),
+        targetURL: recurringTargetURL,
+        frequency: recurringDurationOption,
+        isRecurring: true,
+      };
+    } else {
+      isValidationErrorOccurs = true;
+      showReminderMeError("Please fill all fields");
+    }
   } else {
-    remainder = {
-      dateTime: $("#reminderDate").val() + " " + $("#reminderTime").val(),
-      Message: $("#message").val(),
-      isURLLaunchEnabled: $("#launchURL").is(":checked"),
-      targetURL: $("#targetURL").val(),
-      isRecurring: false,
-    };
+    let reminderDate = $("#reminderDate").val(),
+      reminderTime = $("#reminderTime").val(),
+      targetURL = $("#targetURL").val();
+
+    if (reminderDate != "" && reminderTime != "" && targetURL != "") {
+      remainder = {
+        dateTime: $("#reminderDate").val() + " " + $("#reminderTime").val(),
+        Message: $("#message").val(),
+        isURLLaunchEnabled: $("#launchURL").is(":checked"),
+        targetURL: $("#targetURL").val(),
+        isRecurring: false,
+      };
+    } else {
+      isValidationErrorOccurs = true;
+      showReminderMeError("Please fill all fields");
+    }
   }
 
-  setAlarmForReminder = function (result) {
-    emptyRemainderFields();
+  if (!isValidationErrorOccurs) {
+    setAlarmForReminder = function (result) {
+      emptyRemainderFields();
 
-    $("#RemainderTableBody").html("");
+      $("#RemainderTableBody").html("");
 
-    fetchRemainder();
-    //createAlarmForRemainder(remainder, result);
-    //code to send message to open notification. This will eventually move into my extension logic
-    chrome.runtime.sendMessage({
-      type: "createAlarmForReminder",
-      options: {
-        id: result,
-        remainder,
-      },
-    });
-  };
+      fetchRemainder();
+      //createAlarmForRemainder(remainder, result);
+      //code to send message to open notification. This will eventually move into my extension logic
+      chrome.runtime.sendMessage({
+        type: "createAlarmForReminder",
+        options: {
+          id: result,
+          remainder,
+        },
+      });
+    };
 
-  add("RemaindME", "RemaindMEDB", remainder, false, setAlarmForReminder);
+    add("RemaindME", "RemaindMEDB", remainder, false, setAlarmForReminder);
+  }
+}
+
+function showReminderMeError(errorMsg) {
+  $(".reminderMeError").show();
+  $(".reminderMeError").html(errorMsg);
 }
 
 $(document.body).on("click", ".delete", function (event) {
@@ -1038,6 +1106,18 @@ function emptyRemainderFields() {
   $("#reminderTime").val("");
 
   $("#message").val("");
+
+  $("#targetURL").val("");
+
+  $(".recurringDurationOption .text").val("");
+  $("#recurringTimeValue").val("");
+
+  $("#recurringMessage").val("");
+
+  $("#recurringTargetURL").val("");
+  $(".recurringDurationOptionDays .text").val("");
+
+  $("#recurringDateValue").val("");
 }
 
 function deleteRemainder(id) {
