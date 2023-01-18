@@ -56,10 +56,9 @@ $("#resetChart").click(function (event) {
 });
 
 $("#todayFilter").click(function (event) {
-  // chrome.runtime.sendMessage({
-  //   type: "test",
-  //   options: {},
-  // });
+  chrome.topSites.get(function (results) {
+    console.log(results);
+  });
   filterChartData("day", event.currentTarget.id);
 });
 
@@ -155,6 +154,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message == "History Loaded") {
     // Filter out other messages
     redirectToDashboardPage();
+  } else if (request.message == "HistoryListedSaved") {
+    if (window.location.pathname.indexOf("/MainPage.html") == -1) {
+      redirectToDashboardPage();
+    }
   }
 });
 
@@ -162,10 +165,6 @@ function fetchBrowserHistory() {
   chrome.runtime.sendMessage({
     type: "fetchBrowserHistoryCE",
   });
-
-  // setTimeout(() => {
-  //   redirectToDashboardPage();
-  // }, 2000);
 }
 function redirectToDashboardPage() {
   let url = chrome.runtime.getURL("MainPage.html");
@@ -885,6 +884,17 @@ $(document).ready(function () {
       console.log(val);
     },
   });
+
+  if (window.location.href.indexOf("MainPage") != -1) {
+    chrome.runtime.sendMessage({
+      type: "checkHistoryListAvailable",
+    });
+
+    // window.location.href = window.location.href.replace(
+    //   "MainPage",
+    //   "StartPage"
+    // );
+  }
 
   $("#mainListBackButton").click(function (event) {
     backToMainList();

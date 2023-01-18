@@ -269,6 +269,12 @@
   color: red;
   display: none;
 }
+.TargetURL {
+  max-width: 150px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .addNewRemainderForOneTime {
   margin: 25px 5%;

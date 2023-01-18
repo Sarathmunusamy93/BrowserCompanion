@@ -52,24 +52,14 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     chrome.storage.sync.clear();
   } else if (request.type == "fetchBrowserHistoryCE") {
     fetchBrowserHistoryCE(sender.tab.id);
-  } else if(request.type == "test"){
+
     
-chrome.devtools.network.getHAR(
-  function(data){
-    console.log(data);
-  }
-)
 
-
-chrome.devtools.network.onRequestFinished.addListener(
-  function(request) {
-    if (request.response.bodySize > 40*1024) {
-      chrome.devtools.inspectedWindow.eval(
-          'console.log("Large image: " + unescape("' +
-          escape(request.request.url) + '"))');
-    }
-  }
-);
+  } else if (request.type == "checkHistoryListAvailable") {
+    chrome.storage.sync.get("HistoryListedSaved", function (result) {
+      
+      chrome.tabs.sendMessage(sender.tab.id, {  message: "HistoryListedSaved" });
+    });
   }
 });
 
@@ -115,6 +105,9 @@ function handleHistoryDataSave(data, currentIndex, tabid) {
         console.log("Total: " + localData.length + "Current: " + currentIndex);
         handleHistoryDataSave(localData, currentIndex + 1, tabid);
       } else {
+        chrome.storage.sync.set({
+          HistoryListedSaved: "true",
+        });
         chrome.tabs.sendMessage(tabid, { message: "History Loaded" });
       }
     }

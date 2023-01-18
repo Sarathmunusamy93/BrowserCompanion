@@ -8,7 +8,9 @@ $(document).ready(function () {
     $("#durationValue").val("");
     $("#controlHours").val("");
   });
-
+  chrome.storage.sync.clear(function () {
+    console.log("Cleared...");
+  });
   renderControlSitesList();
 
   let myVar = setInterval(myTimer, 100);
