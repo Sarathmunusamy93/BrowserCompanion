@@ -1,9 +1,9 @@
 ### Features
 
-- Helps to view the list of visited sites and its visited count details
-- Gives the graphical representation for hours, days, week, month wise number of hours spend in the specific site
-- Set the alaram or control if you spend more time on the specific web sites, you can configure restricted hours for any sites above which you will be reciving notifiation that we reached the time limit.
-- You can set the alarm or reminder in one time or recurring basis.
+- Helps to view the list of visited sites and its visited count details 
+- Gives the graphical representation for hours, days, week, month a wise number of hours spent on the specific site 
+- Set the alarm or control if you spend more time on specific websites, you can configure restricted hours for any sites above which you will be receiving notification that we have reached the time limit. 
+- You can set the alarm or reminder on one time or recurring basis.
 
 # Logo
 
@@ -11,7 +11,7 @@
 
 
 
-###Screenshots
+#Screenshots
 
 > Home Page:
 
