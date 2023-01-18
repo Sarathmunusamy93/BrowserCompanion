@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const container = document.querySelector(".container");
+        const colors = [
+          "#FF4D80",
+          "#FF3E41",
+          "#DF367C",
+          "#883955",
+          "#4C3549",
+          "#88498F",
+          "#423E3B",
+        ];
+
+        let panelCreated = false;
+        let panelNum = 3;
+
+        const createPanel = (index) => {
+          const section = document.createElement("section");
+          const h1 = document.createElement("h1");
+          container.appendChild(section);
+          section.appendChild(h1);
+          h1.innerHTML = `Panel ${index}`;
+          gsap.set(section, {
+            backgroundColor: colors[gsap.utils.random(0, colors.length - 1, 1)],
+            className: `panel-${index}`,
+          });
+        };
+
+        // ScrollTrigger.create({
+        //   trigger: document.body,
+        //   start: "top top",
+        //   end: "bottom bottom",
+        //   onUpdate: (self) => {
+        //     let progress = self.progress.toFixed(2);
+        //     if (progress >= 0.9 && self.direction === 1) {
+        //     //  createPanel(panelNum++);
+        //       ScrollTrigger.refresh();
+        //     }
+        //   },
+        // });
+
+//         gsap.timeline({
+//   scrollTrigger: {
+//      trigger: ".shoe",
+//     start: "center center",
+//     end: "bottom top",
+//     scrub: true,
+//     pin: true
+//   }
+// })
+
+let tween = gsap.from(".shoe", { duration: 2.5,x:600, ease: "elastic.out(1, 0.3)"}),
+    st = ScrollTrigger.create({
+        trigger: ".shoe",
+        start: "top right",
+        end: "top end",
+        animation: tween
+      });
+      });
+    </script>
+    <style>
+      body,
+      html {
+        font-size: 1.8em;
+        color: white;
+        font-weight: 300;
+        margin: 0 auto;
+        justify-content: center;
+        overflow-x: hidden;
+      }
+      body {
+        margin: 0;
+        font-family: sans-serif;
+        color: #fff;
+      }
+      section {
+        display: flex;
+        align-items: left;
+        justify-content: left;
+        height: 100vh;
+      }
+      .panel-1 {
+        background: #2e5f89;
+        display: flex;
+        flex-direction: column;
+      }
+      .panel-2 {
+        background: #773f79;
+      }
+      h1 {
+        font-size: 4rem;
+      }
+
+      .arrow {
+        position: relative;
+        top: -4px;
+        margin: 0 auto;
+        width: 20px;
+        height: 20px;
+        background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KPHBhdGggZmlsbD0iYmxhY2siIGQ9Ik00ODMuMiwxOTIuMmMtMjAuNS0yMC41LTUzLjUtMjAuOC03My43LTAuNkwyNTcsMzQ0LjFMMTA0LjUsMTkxLjZjLTIwLjItMjAuMi01My4yLTE5LjktNzMuNywwLjYKCWMtMjAuNSwyMC41LTIwLjgsNTMuNS0wLjYsNzMuN2wxOTAsMTkwYzEwLjEsMTAuMSwyMy40LDE1LjEsMzYuOCwxNWMxMy4zLDAuMSwyNi43LTQuOSwzNi44LTE1bDE5MC0xOTAKCUM1MDMuOSwyNDUuNyw1MDMuNywyMTIuNyw0ODMuMiwxOTIuMnoiLz4KPC9zdmc+);
+        background-size: contain;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <section class="panel-1">
+        <div style="align-items: center">
+          This page will gives you some instruction about this site
+        </div>
+        <div style="font-size: 0.5em">Scroll down</div>
+        <div class="arrow"></div>
+      </section>
+      <section class="panel-2-1">
+        <section class="shoe">
+        <svg
+          width="100mm"
+          height="90mm"
+          viewBox="0 0 210 297"
+          version="1.1"
+          id="svg17487"
+          inkscape:version="1.1.2 (b8e25be833, 2022-02-05)"
+          sodipodi:docname="Chart.svg"
+          xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+          xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:svg="http://www.w3.org/2000/svg"
+        >
+          <sodipodi:namedview
+            id="namedview17489"
+            pagecolor="#ffffff"
+            bordercolor="#666666"
+            borderopacity="1.0"
+            inkscape:pageshadow="2"
+            inkscape:pageopacity="0.0"
+            inkscape:pagecheckerboard="0"
+            inkscape:document-units="mm"
+            showgrid="false"
+            inkscape:zoom="0.42406108"
+            inkscape:cx="517.61411"
+            inkscape:cy="677.96837"
+            inkscape:window-width="1920"
+            inkscape:window-height="991"
+            inkscape:window-x="-9"
+            inkscape:window-y="-9"
+            inkscape:window-maximized="1"
+            inkscape:current-layer="g75"
+          />
+          <defs id="defs17484" />
+          <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1">
+            <g
+              class="highcharts-series-group"
+              data-z-index="3"
+              aria-hidden="false"
+              id="g79"
+              style="font-size: 12px; font-family: Roboto"
+              transform="matrix(0.26458333,0,0,0.26458333,32.954592,109.59673)"
+            >
+              <g
+                class="highcharts-series highcharts-series-0 highcharts-pie-series"
+                data-z-index="0.1"
+                opacity="1"
+                transform="translate(10,10)"
+                clip-path="none"
+                aria-hidden="false"
+                id="g75"
+              >
+                <path
+                  fill="#94d13d"
+                  d="m 271.2039,-350.12499 a 389.10327,469.37148 0 0 1 117.21983,21.77528 l -70.28435,268.557686 a 155.64131,187.7486 0 0 0 -46.88793,-8.7101 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-0"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 1, 80."
+                  id="path17"
+                />
+                <path
+                  fill="#6f58e9"
+                  d="m 388.79471,-328.20816 a 389.10327,469.37148 0 0 1 81.47022,44.09958 L 350.87587,-42.095555 a 155.64131,187.7486 0 0 0 -32.58811,-17.639849 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-1"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 2, 60."
+                  id="path19"
+                />
+                <path
+                  fill="#2d99fe"
+                  d="m 470.59919,-283.86834 a 389.10327,469.37148 0 0 1 36.72001,29.96663 L 365.69757,-30.012812 a 155.64131,187.7486 0 0 0 -14.68801,-11.98665 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-2"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 3, 30."
+                  id="path21"
+                />
+                <path
+                  fill="#2ddac1"
+                  d="m 507.62842,-253.61679 a 389.10327,469.37148 0 0 1 22.4963,22.41072 L 374.81977,-20.934559 a 155.64131,187.7486 0 0 0 -8.99854,-8.964283 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-3"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 4, 20."
+                  id="path23"
+                />
+                <path
+                  fill="#3b9959"
+                  d="m 530.41512,-230.89365 a 389.10327,469.37148 0 0 1 70.12375,100.02161 L 402.98541,19.199054 a 155.64131,187.7486 0 0 0 -28.04948,-40.00864 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-4"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 6, 73."
+                  id="path25"
+                />
+                <path
+                  fill="#000000"
+                  d="M 600.74605,-130.47474 A 389.10327,469.37148 0 0 1 648.48194,4.0318906 L 422.16263,73.160625 A 155.64131,187.7486 0 0 0 403.0683,19.357975 Z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-5"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 7, 82."
+                  id="path27"
+                />
+                <path
+                  fill="#ded7eb"
+                  d="M 648.57724,4.4869516 A 389.10327,469.37148 0 0 1 659.07899,157.69182 L 426.40149,134.62459 A 155.64131,187.7486 0 0 0 422.2008,73.342674 Z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-6"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 8, 86."
+                  id="path29"
+                />
+                <path
+                  fill="#ea442e"
+                  d="M 659.04693,158.1596 A 389.10327,469.37148 0 0 1 625.28842,314.06005 L 412.88525,197.1719 a 155.64131,187.7486 0 0 0 13.50342,-62.36021 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-7"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 9, 90."
+                  id="path31"
+                />
+                <path
+                  fill="#95b1a4"
+                  d="m 625.12671,314.48701 a 389.10327,469.37148 0 0 1 -39.6668,81.66635 L 396.95384,230.00923 a 155.64131,187.7486 0 0 0 15.86675,-32.66653 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-8"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 10, 53."
+                  id="path33"
+                />
+                <path
+                  fill="#26db45"
+                  d="m 585.2302,396.5322 a 389.10327,469.37148 0 0 1 -27.39492,40.24422 L 385.90401,246.25847 a 155.64131,187.7486 0 0 0 10.95796,-16.09769 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-9"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 11, 29."
+                  id="path35"
+                />
+                <path
+                  fill="#3f181a"
+                  d="M 557.57193,437.12192 A 389.10327,469.37148 0 0 1 503.59028,495.7844 L 364.20599,269.86167 a 155.64131,187.7486 0 0 0 21.59265,-23.46503 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-0"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 12, 49."
+                  id="path37"
+                />
+                <path
+                  fill="#a7b29f"
+                  d="m 503.27804,496.06447 a 389.10327,469.37148 0 0 1 -82.33791,56.44704 l -89.7942,-259.959 a 155.64131,187.7486 0 0 0 32.93515,-22.57883 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-1"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 13, 64."
+                  id="path39"
+                />
+                <path
+                  fill="#6edbf0"
+                  d="m 420.58086,552.69183 a 389.10327,469.37148 0 0 1 -87.38472,29.94619 L 296.04833,304.6031 a 155.64131,187.7486 0 0 0 34.95392,-11.9785 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-2"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 14, 61."
+                  id="path41"
+                />
+                <path
+                  fill="#7d9fa5"
+                  d="m 332.81196,582.71248 a 389.10327,469.37148 0 0 1 -121.29244,0.336 l 35.85815,-278.28121 a 155.64131,187.7486 0 0 0 48.51701,-0.13439 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-3"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 15, 82."
+                  id="path43"
+                />
+                <path
+                  fill="#faa819"
+                  d="M 211.13505,582.97615 A 389.10327,469.37148 0 0 1 101.96528,541.84908 L 203.556,288.28751 a 155.64131,187.7486 0 0 0 43.6679,16.45083 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-4"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 16, 77."
+                  id="path45"
+                />
+                <path
+                  fill="#88da7f"
+                  d="M 101.61502,541.6446 A 389.10327,469.37148 0 0 1 16.120409,473.60303 L 169.21805,260.9891 a 155.64131,187.7486 0 0 0 34.19784,27.21662 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-5"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 17, 69."
+                  id="path47"
+                />
+                <path
+                  fill="#da6575"
+                  d="M 15.826798,473.29504 A 389.10327,469.37148 0 0 1 -1.3130734,454.17977 L 162.24465,253.21979 a 155.64131,187.7486 0 0 0 6.85596,7.64612 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-6"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 18, 16."
+                  id="path49"
+                />
+                <path
+                  fill="#7230dd"
+                  d="M -1.5905884,453.85076 A 389.10327,469.37148 0 0 1 -57.43389,370.39388 L 139.79633,219.70545 a 155.64131,187.7486 0 0 0 22.33732,33.38274 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-7"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 19, 60."
+                  id="path51"
+                />
+                <path
+                  fill="#97959c"
+                  d="m -57.641934,369.99725 a 389.10327,469.37148 0 0 1 -18.93487,-40.4448 L 132.13918,203.36885 a 155.64131,187.7486 0 0 0 7.57392,16.17792 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-8"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 20, 26."
+                  id="path53"
+                />
+                <path
+                  fill="#685e09"
+                  d="M -76.750989,329.13272 A 389.10327,469.37148 0 0 1 -91.122466,290.11245 L 126.3209,187.59287 a 155.64131,187.7486 0 0 0 5.7486,15.60809 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-9"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 21, 24."
+                  id="path55"
+                />
+                <path
+                  fill="#cc7fec"
+                  d="m -91.263919,289.67519 a 389.10327,469.37148 0 0 1 -9.680671,-33.6976 l 223.33664,-82.03867 a 155.64131,187.7486 0 0 0 3.87227,13.47904 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-0"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 22, 20."
+                  id="path57"
+                />
+                <path
+                  fill="#d6adf9"
+                  d="m -101.05777,255.52852 a 389.10327,469.37148 0 0 1 -12.64568,-68.18617 L 117.2885,146.4848 a 155.64131,187.7486 0 0 0 5.05829,27.27448 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-1"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 23, 39."
+                  id="path59"
+                />
+                <path
+                  fill="#b49449"
+                  d="m -113.75972,186.87791 a 389.10327,469.37148 0 0 1 -2.13231,-20.96271 l 232.3051,-28.00126 a 155.64131,187.7486 0 0 0 0.85292,8.3851 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-2"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 24, 12."
+                  id="path61"
+                />
+                <path
+                  fill="#243f17"
+                  d="m -115.93052,165.44813 a 389.10327,469.37148 0 0 1 4.70758,-132.267493 L 118.2807,84.820115 a 155.64131,187.7486 0 0 0 -1.88303,52.906985 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-3"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 25, 74."
+                  id="path63"
+                />
+                <path
+                  fill="#11c135"
+                  d="M -111.15138,32.719278 A 389.10327,469.37148 0 0 1 -68.984853,-108.41684 L 135.17593,28.181123 a 155.64131,187.7486 0 0 0 -16.86658,56.454454 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-4"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 26, 84."
+                  id="path65"
+                />
+                <path
+                  fill="#74886a"
+                  d="M -68.795957,-108.82719 A 389.10327,469.37148 0 0 1 2.8300646,-220.52141 L 163.90191,-16.66069 a 155.64131,187.7486 0 0 0 -28.65039,44.677671 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-5"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 27, 79."
+                  id="path67"
+                />
+                <path
+                  fill="#54fe4b"
+                  d="M 3.1118726,-220.84508 A 389.10327,469.37148 0 0 1 126.455,-316.39998 l 86.89688,261.387863 a 155.64131,187.7486 0 0 0 -49.33727,38.221963 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-6"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 28, 99."
+                  id="path69"
+                />
+                <path
+                  fill="#c17a45"
+                  d="m 126.81623,-316.57447 a 389.10327,469.37148 0 0 1 69.68677,-24.80078 l 44.86809,276.373016 a 155.64131,187.7486 0 0 0 -27.87471,9.920324 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-7"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 29, 49."
+                  id="path71"
+                />
+                <path
+                  fill="#1cb795"
+                  d="m 196.88492,-341.46523 a 389.10327,469.37148 0 0 1 73.85776,-8.65934 l 0.32428,281.622616 a 155.64131,187.7486 0 0 0 -29.54311,3.46373 z"
+                  stroke="#ffffff"
+                  stroke-width="3.07452"
+                  opacity="1"
+                  stroke-linejoin="round"
+                  class="highcharts-point highcharts-color-8"
+                  tabindex="-1"
+                  role="img"
+                  aria-label="Item 30, 50."
+                  id="path73"
+                />
+              </g>
+              <g
+                class="highcharts-markers highcharts-series-0 highcharts-pie-series"
+                data-z-index="0.1"
+                opacity="1"
+                transform="translate(10,10)"
+                clip-path="none"
+                aria-hidden="true"
+                id="g77"
+              />
+            </g>
+            <text
+              xml:space="preserve"
+              style="
+                font-style: normal;
+                font-weight: normal;
+                font-size: 14.299px;
+                line-height: 1.25;
+                font-family: sans-serif;
+                fill: #000000;
+                fill-opacity: 1;
+                stroke: none;
+                stroke-width: 0.357477;
+              "
+              x="131.59961"
+              y="87.232239"
+              id="text8917"
+              transform="scale(0.63158838,1.5833097)"
+            >
+              <tspan
+                sodipodi:role="line"
+                id="tspan8915"
+                x="72.59961"
+                y="87.232239"
+                style="stroke-width: 0.357477"
+              >
+                Total Visited
+              </tspan>
+              <tspan
+                sodipodi:role="line"
+                x="72.59961"
+                y="105.10599"
+                id="tspan8919"
+                style="stroke-width: 0.357477"
+              >
+                Sites: 45
+              </tspan>
+            </text>
+          </g>
+        </svg>
+        </section>
+      </section>
+    </main>
+  </body>
+</html>
