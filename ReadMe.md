@@ -7,7 +7,7 @@
 
 # Logo
 
-![](https://github.com/Sarathmunusamy93/ChromeExtension-trackMe/blob/BrowserCompanion-V2/Logo/LogoIcon.png?raw=true)
+![](https://github.com/Sarathmunusamy93/BrowserCompanion/blob/BrowserCompanion-V2/Logo/LogoIcon24x24.ico?raw=true)
 
 
 
